@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f)ot#$378!sy7*@c)ky9*3*pt@laxww!+9b)w$^10(wvw*-o$4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'tk4_basdat.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ddd03r5kp2p27i',
+        'USER' : 'pkegtzbiikwjce',
+        'PASSWORD' : '9b33af05ebbbb5048e65fd53dcea6d593bbfa4ae5259db218b73ddaed2fd1acb',
+        'HOST' : 'ec2-52-0-114-209.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
