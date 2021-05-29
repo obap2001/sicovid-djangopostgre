@@ -12,11 +12,11 @@ def registerAdmin(request):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
 
+        # Execute Query
         with connection.cursor() as cursor:
             cursor.execute(
                 f'''set search_path to siruco; 
                 insert into akun_pengguna values
                 ('{email}','{password}' ,'ADMIN')'''
                 )
-          #  test = cursor.fetchone()
     return render(request,'register.html',response)
