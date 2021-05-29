@@ -17,6 +17,8 @@ def registerAdmin(request):
             cursor.execute(
                 f'''set search_path to siruco; 
                 insert into akun_pengguna values
-                ('{email}','{password}' ,'ADMIN')'''
+                ('{email}','{password}' ,'Admin Sistem');
+                insert into admin values
+                ('{email}');'''
                 )
     return render(request,'register.html',response)
