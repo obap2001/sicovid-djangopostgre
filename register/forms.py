@@ -6,8 +6,24 @@ class adminRegisterForm(forms.Form):
 
 class penggunaPublikRegisterForm(forms.Form):
     username = forms.CharField( max_length=50, required=True)
+    password = forms.CharField(max_length=20, required=True)
     NIK = forms.CharField(max_length=20, required=True)
     nama = forms.CharField(max_length=50, required=True)
     status = forms.CharField(max_length=10, required=True)
     peran = forms.CharField(max_length=20, required=True)
     noHP = forms.CharField(max_length=12, required=True)
+
+class adminSistemRegisterForm(forms.Form):
+    username = forms.CharField(max_length=50, required=True)
+    password = forms.CharField(max_length=20, required=True)
+    peran = forms.CharField(max_length=20, required=True)
+
+class adminDokterRegisterForm(forms.Form):
+    username = forms.CharField(max_length=50, required=True)
+    password = forms.CharField(max_length=20, required=True)
+    peran = forms.CharField(max_length=20, required=True)
+
+class adminSatgasRegisterForm(forms.Form):
+    username = forms.CharField(max_length=50, required=True)
+    password = forms.CharField(max_length=20, required=True)
+    peran = forms.CharField(max_length=20, required=True)

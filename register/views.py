@@ -1,5 +1,6 @@
 from django.http import response
 from django.shortcuts import render
+from django.db import connection
 from .forms import adminRegisterForm
 
 # Create your views here.
@@ -11,8 +12,11 @@ def registerAdmin(request):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
 
-
-
-
-
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f'''set search_path to siruco; 
+                insert into akun_pengguna values
+                ('{email}','{password}' ,'ADMIN')'''
+                )
+          #  test = cursor.fetchone()
     return render(request,'register.html',response)
