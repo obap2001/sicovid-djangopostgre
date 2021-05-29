@@ -2,6 +2,7 @@ from django.http import response
 from django.shortcuts import render
 from django.db import connection
 from .forms import adminRegisterForm
+from register.forms import adminDokterRegisterForm
 
 # Create your views here.
 def registerAdmin(request):
@@ -19,6 +20,32 @@ def registerAdmin(request):
                 insert into akun_pengguna values
                 ('{email}','{password}' ,'Admin Sistem');
                 insert into admin values
+                ('{email}');'''
+                )
+    return render(request,'register.html',response)
+
+def registerDokter(request):
+    response = {}
+    form = adminDokterRegisterForm(request.POST)
+    response['form'] = form
+    if request.method == 'POST' and form.is_valid():
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        peran = form.cleaned_data['peran']
+        nama = form.cleaned_data['nama']
+        noHP = form.cleaned_data['noHP']
+        gelarDepan = form.cleaned_data['gelarDepan']
+        gelarBelakang = form.cleaned_data['gelarBelakang']
+
+        # Execute Query
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f'''set search_path to siruco; 
+                insert into akun_pengguna values
+                ('{email}','{password}' ,'Admin Sistem');
+                insert into admin values
+                ('{email}');
+                insert into dokter values
                 ('{email}');'''
                 )
     return render(request,'register.html',response)
