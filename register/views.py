@@ -42,4 +42,4 @@ def registerPenggunaPublik(request):
                     ('{username}', '{nik}', '{nama}', '{status}', 'PENGGUNA PUBLIK', '{noHP}');
                 '''
             )
-    re
+    return render (request, 'register.html',response)
