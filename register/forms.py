@@ -19,9 +19,15 @@ class adminSistemRegisterForm(forms.Form):
     peran = forms.CharField(max_length=20, required=True)
 
 class adminDokterRegisterForm(forms.Form):
+    email = forms.EmailField(required=True)
     username = forms.CharField(max_length=50, required=True)
     password = forms.CharField(max_length=20, required=True)
+    noSTR = forms.CharField(max_length=20, required=True)
     peran = forms.CharField(max_length=20, required=True)
+    nama = forms.CharField(max_length=50, required=True)
+    noHP = forms.CharField(max_length=12, required=True)
+    gelarDepan = forms.CharField(max_length=10, required=True)
+    gelarBelakang = forms.CharField(max_length=10, required=True)
 
 class adminSatgasRegisterForm(forms.Form):gi
     username = forms.CharField(max_length=50, required=True)
