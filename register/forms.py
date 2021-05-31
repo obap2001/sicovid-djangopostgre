@@ -32,4 +32,4 @@ class adminDokterRegisterForm(forms.Form):
 class adminSatgasRegisterForm(forms.Form):
     username = forms.CharField(max_length=50, required=True)
     password = forms.CharField(max_length=20, required=True)
-    peran = forms.CharField(max_length=20, required=True)
+    kode_faskes = forms.CharField(max_length=3, required=True)
