@@ -78,7 +78,7 @@ def registerAdminSatgas(request):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
         kode_faskes = form.cleaned_data['kode_faskes']
-    
+
         # Execute Query
         with connection.cursor() as cursor:
             cursor.execute(
@@ -114,5 +114,4 @@ def registerDokter(request):
                 insert into dokter values
                 ('{email}');'''
                 )
-
     return render(request,'register.html',response)

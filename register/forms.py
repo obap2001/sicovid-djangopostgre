@@ -29,7 +29,9 @@ class adminDokterRegisterForm(forms.Form):
     gelarDepan = forms.CharField(max_length=10, required=True)
     gelarBelakang = forms.CharField(max_length=10, required=True)
 
+
 class adminSatgasRegisterForm(forms.Form):
     username = forms.CharField(max_length=50, required=True)
     password = forms.CharField(max_length=20, required=True)
     kode_faskes = forms.CharField(max_length=3, required=True)
+
