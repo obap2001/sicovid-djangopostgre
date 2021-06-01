@@ -1,8 +1,9 @@
 from django.http import response
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db import connection, InternalError
-from .forms import adminSistemRegisterForm, penggunaPublikRegisterForm, adminDokterRegisterForm,adminSatgasRegisterForm 
+from .forms import adminSistemRegisterForm, penggunaPublikRegisterForm, adminDokterRegisterForm,adminSatgasRegisterForm
+from login.views import login
 
 # Register Admin
 def registerAdminSistem(request):
@@ -14,6 +15,7 @@ def registerAdminSistem(request):
 
     # Assigning data for response
     response['form'] = form
+    response['title'] = 'Register Admin Sistem'
 
     # Getting data from Form on POST
     if request.method == 'POST' and form.is_valid():
@@ -30,7 +32,9 @@ def registerAdminSistem(request):
                     insert into admin values
                     ('{email}');'''
                     )
-                messages.success(request,f'Successfully Registered as ADMIN_SISTEM, Welcome {email}')
+                messages.success(request,'Successfully Registered as Admin Sistem')
+                login(request,email,password)
+                return redirect('home')
 
             except InternalError:
                 # Check if user already regitstered or not
@@ -51,6 +55,7 @@ def registerPenggunaPublik(request):
     response = {}
     form = penggunaPublikRegisterForm(request.POST)
     response['form'] = form
+    response['title'] = 'Register Pengguna Publik'
     if request.method == 'POST' and form.is_valid():
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
@@ -69,6 +74,10 @@ def registerPenggunaPublik(request):
                     ('{email}', '{nik}', '{nama}', 'AKTIF', '{noHP}', 'PENGGUNA_PUBLIK', '{noHP}');
                     '''
                 )
+                messages.success(request,'Successfully Registered as Pengguna Publik')
+                login(request,email,password)
+                return redirect('home')
+
             except InternalError:
                 # Check if user already regitstered or not
                 cursor.execute(
@@ -88,11 +97,11 @@ def registerAdminSatgas(request):
     response = {}
     form = adminSatgasRegisterForm(request.POST)
     response['form'] = form
+    response['title'] = 'Register Admin Satgas'
     if request.method == 'POST' and form.is_valid():
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        kode_faskes = form.cleaned_data['kode_faskes']
-        print(kode_faskes)
+        kode_faskes = form.cleaned_data['kode_faskes'] # Will get the kode_fakses instead of the name
 
         # Execute Query
         with connection.cursor() as cursor:
@@ -105,6 +114,11 @@ def registerAdminSatgas(request):
                     insert into admin_satgas values
                     ('{email}', '{kode_faskes}');'''
                     )
+                messages.success(request,'Successfully Registered as Admin Satgas')
+                login(request,email,password)
+                return redirect('home')
+
+
             except InternalError:
                 # Check if user already regitstered or not
                 cursor.execute(
@@ -124,6 +138,7 @@ def registerDokter(request):
     response = {}
     form = adminDokterRegisterForm(request.POST)
     response['form'] = form
+    response['title'] = 'Register Dokter'
     if request.method == 'POST' and form.is_valid():
         email = form.cleaned_data['username']
         password = form.cleaned_data['password']
@@ -144,6 +159,9 @@ def registerDokter(request):
                     insert into dokter values
                     ('{email}','{noSTR}','{nama}','{noHP}','{gelarDepan}','{gelarBelakang}');'''
                     )
+                login(request,email,password)
+                return redirect('home')
+
             except InternalError:
                 # Check if user already regitstered or not
                 cursor.execute(

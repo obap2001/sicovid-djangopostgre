@@ -12,18 +12,18 @@ def fetch_data_faskes():
 
 class adminSistemRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
-    password = forms.CharField(max_length=20, required=True)
+    password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput())
 
 class penggunaPublikRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
-    password = forms.CharField(max_length=20, required=True)
+    password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput())
     nama = forms.CharField(max_length=50, required=True)
     nik = forms.CharField(max_length=20, required=True)
     noHP = forms.CharField(max_length=12, required=True)
 
 class adminDokterRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
-    password = forms.CharField(max_length=20, required=True)
+    password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput())
     noSTR = forms.CharField(max_length=20, required=True)
     nama = forms.CharField(max_length=50, required=True)
     noHP = forms.CharField(max_length=12, required=True)
@@ -31,9 +31,6 @@ class adminDokterRegisterForm(forms.Form):
     gelarBelakang = forms.CharField(max_length=10, required=True)
 
 class adminSatgasRegisterForm(forms.Form):
-    email = forms.CharField(max_length=50, required=True)
-    password = forms.CharField(max_length=20, required=True)
+    email = forms.EmailField(required=True)
+    password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput())
     kode_faskes = forms.ChoiceField(choices=fetch_data_faskes())
-
-
-

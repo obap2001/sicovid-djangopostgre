@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base_html',
     'register',
-    'crispy_forms'
+    'crispy_forms',
+    'login'
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,11 @@ DATABASES = {
         'USER' : 'pkegtzbiikwjce',
         'PASSWORD' : '9b33af05ebbbb5048e65fd53dcea6d593bbfa4ae5259db218b73ddaed2fd1acb',
         'HOST' : 'ec2-52-0-114-209.compute-1.amazonaws.com',
-        'PORT': '5432'
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=siruco'
+        },
+
     }
 }
 

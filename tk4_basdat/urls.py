@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from base_html.views import home_view
+from login.views import login_view,logout_view
+
 
 urlpatterns = [
     path('register/', include('register.urls')),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
     path('', home_view, name='home')
 ]
