@@ -1,18 +1,16 @@
 from django.http import response
 from django.contrib import messages
 from django.shortcuts import render
-
 from django.db import connection, InternalError
-from .forms import adminRegisterForm, adminSatgasRegisterForm,adminDokterRegisterForm, penggunaPublikRegisterForm
-
+from .forms import adminSistemRegisterForm, penggunaPublikRegisterForm, adminDokterRegisterForm,adminSatgasRegisterForm 
 
 # Register Admin
-def registerAdmin(request):
+def registerAdminSistem(request):
     # response for Passing data into Templates
     response = {}
 
     # Institiate The Form
-    form = adminRegisterForm(request.POST)
+    form = adminSistemRegisterForm(request.POST)
 
     # Assigning data for response
     response['form'] = form
@@ -28,17 +26,17 @@ def registerAdmin(request):
                 cursor.execute(
                     f'''set search_path to siruco; 
                     insert into akun_pengguna values
-                    ('{email}','{password}' ,'Admin Sistem');
+                    ('{email}','{password}' ,'ADMIN_SISTEM');
                     insert into admin values
                     ('{email}');'''
                     )
-                messages.success(request,f'Successfully Registerd, Welcome {email}')
+                messages.success(request,f'Successfully Registered as ADMIN_SISTEM, Welcome {email}')
 
             except InternalError:
                 # Check if user already regitstered or not
                 cursor.execute(
                     f'''set search_path to siruco;
-                    SELECT USERNAME FROM AKUN_PENGGUNA
+                    SELECT USERNAME,PERAN FROM AKUN_PENGGUNA
                     WHERE USERNAME='{email}';'''
                     )
                 data = cursor.fetchone()
@@ -54,20 +52,36 @@ def registerPenggunaPublik(request):
     form = penggunaPublikRegisterForm(request.POST)
     response['form'] = form
     if request.method == 'POST' and form.is_valid():
-        username = form.cleaned_data['username']
+        email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        nik = form.cleaned_data['nik']
         nama = form.cleaned_data['nama']
-        status = form.cleaned_data['status']
+        nik = form.cleaned_data['nik']
         noHP = form.cleaned_data['noHP']
 
         # Execute Querry
         with connection.cursor() as cursor:
-            cursor.execute(
-                f'''insert into siruco.pengguna_publik values
-                    ('{username}', '{nik}', '{nama}', '{status}', 'PENGGUNA PUBLIK', '{noHP}');
-                '''
-            )
+            try:
+                cursor.execute(
+                    f'''
+                    insert into siruco.akun_pengguna values
+                    ('{email}','{password}' ,'PENGGUNA_PUBLIK');
+                    insert into siruco.pengguna_publik values
+                    ('{email}', '{nik}', '{nama}', 'AKTIF', '{noHP}', 'PENGGUNA_PUBLIK', '{noHP}');
+                    '''
+                )
+            except InternalError:
+                # Check if user already regitstered or not
+                cursor.execute(
+                    f'''set search_path to siruco;
+                    SELECT USERNAME,PERAN FROM AKUN_PENGGUNA
+                    WHERE USERNAME='{email}';'''
+                    )
+                data = cursor.fetchone()
+                if data: # Exception if user already register
+                    messages.error(request,'User has already been registered')
+                else: # Exception if password does not match requirement
+                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
+
     return render(request, 'register.html',response)
 
 def registerAdminSatgas(request):
@@ -78,16 +92,32 @@ def registerAdminSatgas(request):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
         kode_faskes = form.cleaned_data['kode_faskes']
+        print(kode_faskes)
 
         # Execute Query
         with connection.cursor() as cursor:
-            cursor.execute(
-                f'''set search_path to siruco; 
-                insert into akun_pengguna values
-                ('{email}','{password}' ,'Admin Satgas');
-                insert into admin_satgas values
-                ('{email}', '{kode_faskes}');'''
-                )
+            try:
+                cursor.execute(
+                    f'''set search_path to siruco; 
+                    insert into akun_pengguna values
+                    ('{email}','{password}' ,'ADMIN_SATGAS');
+                    insert into admin values ('{email}');
+                    insert into admin_satgas values
+                    ('{email}', '{kode_faskes}');'''
+                    )
+            except InternalError:
+                # Check if user already regitstered or not
+                cursor.execute(
+                    f'''set search_path to siruco;
+                    SELECT USERNAME,PERAN FROM AKUN_PENGGUNA
+                    WHERE USERNAME='{email}';'''
+                    )
+                data = cursor.fetchone()
+                if data: # Exception if user already register
+                    messages.error(request,'User has already been registered')
+                else: # Exception if password does not match requirement
+                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
+
     return render(request,'register.html',response)
 
 def registerDokter(request):
@@ -95,9 +125,9 @@ def registerDokter(request):
     form = adminDokterRegisterForm(request.POST)
     response['form'] = form
     if request.method == 'POST' and form.is_valid():
-        username = form.cleaned_data['username']
+        email = form.cleaned_data['username']
         password = form.cleaned_data['password']
-        peran = form.cleaned_data['peran']
+        noSTR = form.cleaned_data['noSTR']
         nama = form.cleaned_data['nama']
         noHP = form.cleaned_data['noHP']
         gelarDepan = form.cleaned_data['gelarDepan']
@@ -105,13 +135,26 @@ def registerDokter(request):
 
         # Execute Query
         with connection.cursor() as cursor:
-            cursor.execute(
-                f'''set search_path to siruco; 
-                insert into akun_pengguna values
-                ('{email}','{password}' ,'Admin Sistem');
-                insert into admin values
-                ('{email}');
-                insert into dokter values
-                ('{email}');'''
-                )
+            try:
+                cursor.execute(
+                    f'''set search_path to siruco; 
+                    insert into akun_pengguna values
+                    ('{email}','{password}' ,'DOKTER');
+                    insert into admin values ('{email}');
+                    insert into dokter values
+                    ('{email}','{noSTR}','{nama}','{noHP}','{gelarDepan}','{gelarBelakang}');'''
+                    )
+            except InternalError:
+                # Check if user already regitstered or not
+                cursor.execute(
+                    f'''set search_path to siruco;
+                    SELECT USERNAME,PERAN FROM AKUN_PENGGUNA
+                    WHERE USERNAME='{email}';'''
+                    )
+                data = cursor.fetchone()
+                if data: # Exception if user already register
+                    messages.error(request,'User has already been registered')
+                else: # Exception if password does not match requirement
+                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
+
     return render(request,'register.html',response)
