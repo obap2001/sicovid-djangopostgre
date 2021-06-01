@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-
+from base_html.views import home_view
 
 urlpatterns = [
     path('register/', include('register.urls')),
+    path('', home_view, name='home')
 ]
