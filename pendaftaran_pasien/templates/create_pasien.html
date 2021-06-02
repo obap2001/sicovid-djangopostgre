@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title> {{register}} </title>
+    <title> Create_Pasien </title>
 {% endblock title %}
 
 {% load crispy_forms_tags %}
 {% block content  %}
     <form method = "POST">
         {% csrf_token %}
-        {{ form|crispy }}
+        {{ form_umum|crispy }}
+        <p>Alamat (Sesuai KTP):</p>
+        {{ form_KTP|crispy }}
+        <p>Alamat (Domisili):</p>
+        {{ form_domisili|crispy }}
+
     <input class="btn btn-light" type="submit" value="Submit">
     </form>
 {% endblock  %}

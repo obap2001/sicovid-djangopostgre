@@ -33,6 +33,7 @@ def login(request, username, password):
             WHERE USERNAME='{username}' AND PASSWORD='{password}';'''
             )
         data = cursor.fetchone()
+        ('user1','ADMIN_SATGAS')
 
     if data:
         request.session['username'] = data[0]
