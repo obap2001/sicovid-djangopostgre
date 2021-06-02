@@ -7,7 +7,7 @@ def fetch_data_faskes():
         cursor.execute(
         'SELECT Kode, Nama From siruco.FASKES;'
         )
-        faskes_data_choice = cursor.fetchall()
+        faskes_data_choice = cursor.fetchall() #Will Get all output of the query
     return tuple(faskes_data_choice)
 
 class adminSistemRegisterForm(forms.Form):
@@ -34,3 +34,4 @@ class adminSatgasRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput())
     kode_faskes = forms.ChoiceField(choices=fetch_data_faskes())
+
