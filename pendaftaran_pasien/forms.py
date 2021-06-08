@@ -2,7 +2,7 @@ from django import forms
 from django.db import connection
 
 class CreatePasienForm(forms.Form):
-    nik = forms.CharField(max_length=20,required=True)
+    nik = forms.CharField(label='NIK',max_length=20,required=True)
     nama = forms.CharField(max_length=50, required=True)
     nomor_telepon = forms.CharField(max_length=20, required=True)
     nomor_hp = forms.CharField(max_length=12, required=True)
