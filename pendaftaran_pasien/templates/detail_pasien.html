@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create_Pasien </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form_umum|crispy }}
+        <p>Alamat (Sesuai KTP):</p>
+        {{ form_KTP|crispy }}
+        <p>Alamat (Domisili):</p>
+        {{ form_domisili|crispy }}
+    </form>
+{% endblock  %}

@@ -1,6 +1,7 @@
 from django.db import connection
 from django.shortcuts import redirect, render
 from .forms import CreatePasienForm, CreatePasienDomisiliAlamatForm, CreatePasienKTPAlamatForm
+from .forms import DetailPasienForm, DetailPasienDomisiliAlamatForm, DetailPasienKTPAlamatForm
 from django.contrib import messages
 
 # Create your views here.
@@ -22,7 +23,6 @@ def create_daftar_pasien_view(request):
 
         #Form validation
         if request.method == 'POST' and form_umum.is_valid() and form_KTP.is_valid() and form_domisili.is_valid():
-            print(request.POST['num'])
             nik = form_umum.cleaned_data['nik']
             nama = form_umum.cleaned_data['nama']
             nomor_telepon = form_umum.cleaned_data['nomor_telepon']
@@ -71,7 +71,6 @@ def read_daftar_pasien_view(request):
                 f'SELECT NIK, Nama FROM PASIEN;'
             )
             data_pasien = cursor.fetchall()
-            print(data_pasien)
             response['data_pasien'] = data_pasien
 
         #numbering data
@@ -88,7 +87,61 @@ def read_daftar_pasien_view(request):
         return redirect('home')
 
 def detail_daftar_pasien_view(request,nik):
-    pass
+    if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
+        response = {}
+
+        # Fetch Data Pasien
+        data_pasien = []
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f'''SELECT * FROM PASIEN where nik='{nik}';'''
+            )
+            data_pasien = cursor.fetchone()
+
+        # Check if data Exist
+        if not data_pasien:
+            messages.error(request,'Data Pasien Tidak Diemukan')
+            return redirect('home')
+
+        # Handling Initial data for form
+        init_umum_data = {
+            'pendaftar' : data_pasien[1],
+            'nik' : data_pasien[0],
+            'nama' : data_pasien[2],
+            'nomor_telepon' : data_pasien[13],
+            'nomor_hp': data_pasien[14]
+        }
+
+        init_ktp_data = {
+            'jalan'  : data_pasien[3],
+            'kelurahan' : data_pasien[4],
+            'kecamatan' : data_pasien[5],
+            'kabupaten_kota' : data_pasien[6],
+            'provinsi' : data_pasien[7]
+        }
+
+        init_domisili_data = {
+            'jalan'  : data_pasien[8],
+            'kelurahan' : data_pasien[9],
+            'kecamatan' : data_pasien[10],
+            'kabupaten_kota' : data_pasien[11],
+            'provinsi' : data_pasien[12]
+        }
+
+        # Instantiate Form
+        form_umum = DetailPasienForm(request.POST,initial=init_umum_data)
+        form_KTP = DetailPasienKTPAlamatForm(request.POST, initial=init_ktp_data)
+        form_domisili = DetailPasienDomisiliAlamatForm(request.POST, initial=init_domisili_data)
+
+        # Passing Form to Temokates
+        response['form_umum'] = form_umum
+        response['form_KTP'] = form_KTP
+        response['form_domisili'] = form_domisili
+
+        return render(request,'detail_pasien.html',response)
+
+    else:
+        return redirect('home')
 
 def update_daftar_pasien_view(request,nik):
     pass
