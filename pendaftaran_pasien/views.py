@@ -9,7 +9,8 @@ def create_daftar_pasien_view(request):
         response = {}
 
         # Instantiate Form
-        form_umum = CreatePasienForm(request.POST)
+        initial_data = {'pendaftar': request.session['username']}
+        form_umum = CreatePasienForm(request.POST,initial=initial_data)
         form_KTP = CreatePasienKTPAlamatForm(request.POST)
         form_domisili = CreatePasienDomisiliAlamatForm(request.POST)
 
@@ -19,7 +20,7 @@ def create_daftar_pasien_view(request):
         response['form_KTP'] = form_KTP
         response['form_domisili'] = form_domisili
 
-        #Form 
+        #Form validation
         if request.method == 'POST' and form_umum.is_valid() and form_KTP.is_valid() and form_domisili.is_valid():
             nik = form_umum.cleaned_data['nik']
             nama = form_umum.cleaned_data['nama']
@@ -43,7 +44,7 @@ def create_daftar_pasien_view(request):
                     f'SELECT Nama FROM PASIEN where nik={nik};'
                 )
                 check_exist = cursor.fetchone()
-                if check_exist:
+                if check_exist: # Check Record Exist
                     messages.error(f'Pasien dengan nama {nama} dan nik {nik} telah terdaftar di database')
                     return redirect('home')
                 else:
@@ -57,3 +58,13 @@ def create_daftar_pasien_view(request):
         return render(request,'create_pasien.html',response)
     else:
         return redirect('home')
+
+def read_daftar_pasien_view(request):
+    # if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             f'SELECT Nama FROM PASIEN where ni;'
+    #     return render(request,'read_pasien.html',response)
+    # else:
+    #     return redirect('home')
+    pass
