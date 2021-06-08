@@ -5,7 +5,7 @@ from .forms import loginForm
 
 # Create your views here.
 def login_view(request):
-    if 'username' in request.session:
+    if 'username' in request.session: # Check if user logged in or not
         return redirect('home')
 
     else:
