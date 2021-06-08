@@ -22,6 +22,7 @@ def create_daftar_pasien_view(request):
 
         #Form validation
         if request.method == 'POST' and form_umum.is_valid() and form_KTP.is_valid() and form_domisili.is_valid():
+            print(request.POST['num'])
             nik = form_umum.cleaned_data['nik']
             nama = form_umum.cleaned_data['nama']
             nomor_telepon = form_umum.cleaned_data['nomor_telepon']
@@ -41,11 +42,11 @@ def create_daftar_pasien_view(request):
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    f'SELECT Nama FROM PASIEN where nik={nik};'
+                    f'''SELECT Nama FROM PASIEN where nik='{nik}';'''
                 )
                 check_exist = cursor.fetchone()
                 if check_exist: # Check Record Exist
-                    messages.error(f'Pasien dengan nama {nama} dan nik {nik} telah terdaftar di database')
+                    messages.error(request, f'Pasien dengan nama {nama} dan nik {nik} telah terdaftar di database')
                     return redirect('home')
                 else:
                     cursor.execute(
@@ -53,18 +54,44 @@ def create_daftar_pasien_view(request):
                         ('{nik}','{request.session['username']}','{nama}','{jalan_ktp}','{kelurahan_ktp}','{kecamatan_ktp}','{kabupaten_kota_ktp}','{provinsi_ktp}','{jalan_domisili}','{kelurahan_domisili}','{kecamatan_domisili}','{kabupaten_kota_domisili}','{provinsi_domisili}','{nomor_telepon}','{nomor_hp}')
                         '''
                     )
-            messages.success(f'Pasien {nama} Berhasil Ditambahkan')
+            messages.success(request, f'Pasien {nama} Berhasil Ditambahkan')
 
         return render(request,'create_pasien.html',response)
     else:
         return redirect('home')
 
 def read_daftar_pasien_view(request):
-    # if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(
-    #             f'SELECT Nama FROM PASIEN where ni;'
-    #     return render(request,'read_pasien.html',response)
-    # else:
-    #     return redirect('home')
+    if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
+        response = {}
+        data_pasien = [] #Init data_pasien
+
+        # Fetch Pasien Data
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f'SELECT NIK, Nama FROM PASIEN;'
+            )
+            data_pasien = cursor.fetchall()
+            print(data_pasien)
+            response['data_pasien'] = data_pasien
+
+        #numbering data
+        data_pasien_numbered = []
+        counter = 1
+        for i in data_pasien:
+            temp_tuple = (counter, i[0], i[1])
+            data_pasien_numbered.append(temp_tuple)
+            counter += 1
+        response['data'] = data_pasien_numbered
+
+        return render(request,'read_pasien.html',response)
+    else:
+        return redirect('home')
+
+def detail_daftar_pasien_view(request,nik):
+    pass
+
+def update_daftar_pasien_view(request,nik):
+    pass
+
+def delete_daftar_pasien_view(request,nik):
     pass
