@@ -89,49 +89,17 @@ def read_daftar_pasien_view(request):
 def detail_daftar_pasien_view(request,nik):
     if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
+        data_pasien = fetch_data_pasien(nik)
 
         # Fetch Data Pasien
-        data_pasien = []
-        with connection.cursor() as cursor:
-            cursor.execute(
-                f'''SELECT * FROM PASIEN where nik='{nik}';'''
-            )
-            data_pasien = cursor.fetchone()
-
-        # Check if data Exist
         if not data_pasien:
             messages.error(request,'Data Pasien Tidak Diemukan')
             return redirect('home')
 
-        # Handling Initial data for form
-        init_umum_data = {
-            'pendaftar' : data_pasien[1],
-            'nik' : data_pasien[0],
-            'nama' : data_pasien[2],
-            'nomor_telepon' : data_pasien[13],
-            'nomor_hp': data_pasien[14]
-        }
-
-        init_ktp_data = {
-            'jalan'  : data_pasien[3],
-            'kelurahan' : data_pasien[4],
-            'kecamatan' : data_pasien[5],
-            'kabupaten_kota' : data_pasien[6],
-            'provinsi' : data_pasien[7]
-        }
-
-        init_domisili_data = {
-            'jalan'  : data_pasien[8],
-            'kelurahan' : data_pasien[9],
-            'kecamatan' : data_pasien[10],
-            'kabupaten_kota' : data_pasien[11],
-            'provinsi' : data_pasien[12]
-        }
-
         # Instantiate Form
-        form_umum = DetailPasienForm(request.POST,initial=init_umum_data)
-        form_KTP = DetailPasienKTPAlamatForm(request.POST, initial=init_ktp_data)
-        form_domisili = DetailPasienDomisiliAlamatForm(request.POST, initial=init_domisili_data)
+        form_umum = DetailPasienForm(request.POST,initial=data_pasien[0])
+        form_KTP = DetailPasienKTPAlamatForm(request.POST, initial=data_pasien[1])
+        form_domisili = DetailPasienDomisiliAlamatForm(request.POST, initial=data_pasien[2])
 
         # Passing Form to Temokates
         response['form_umum'] = form_umum
@@ -144,7 +112,69 @@ def detail_daftar_pasien_view(request,nik):
         return redirect('home')
 
 def update_daftar_pasien_view(request,nik):
-    pass
+    if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
+        response = {}
+        data_pasien = fetch_data_pasien(nik)
+
+        # Fetch Data Pasien
+        if not data_pasien:
+            messages.error(request,'Data Pasien Tidak Diemukan')
+            return redirect('home')
+
+        # Instantiate Form
+        form_umum = DetailPasienForm(request.POST,initial=data_pasien[0])
+        form_KTP = DetailPasienKTPAlamatForm(request.POST, initial=data_pasien[1])
+        form_domisili = DetailPasienDomisiliAlamatForm(request.POST, initial=data_pasien[2])
+
+        # Passing Form to Templates
+        response['form_umum'] = form_umum
+        response['form_KTP'] = form_KTP
+        response['form_domisili'] = form_domisili
+
+        return render(request,'detail_pasien.html',response)
+
+    else:
+        return redirect('home')
 
 def delete_daftar_pasien_view(request,nik):
     pass
+
+def fetch_data_pasien(nik):
+    data_pasien = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f'''SELECT * FROM PASIEN where nik='{nik}';'''
+        )
+        data_pasien = cursor.fetchone()
+
+    # Check if data Exist
+    if not data_pasien:
+        return False
+
+    # Handling Initial data for form
+    init_umum_data = {
+        'pendaftar' : data_pasien[1],
+        'nik' : data_pasien[0],
+        'nama' : data_pasien[2],
+        'nomor_telepon' : data_pasien[13],
+        'nomor_hp': data_pasien[14]
+    }
+
+    init_ktp_data = {
+        'jalan'  : data_pasien[3],
+        'kelurahan' : data_pasien[4],
+        'kecamatan' : data_pasien[5],
+        'kabupaten_kota' : data_pasien[6],
+        'provinsi' : data_pasien[7]
+    }
+
+    init_domisili_data = {
+        'jalan'  : data_pasien[8],
+        'kelurahan' : data_pasien[9],
+        'kecamatan' : data_pasien[10],
+        'kabupaten_kota' : data_pasien[11],
+        'provinsi' : data_pasien[12]
+    }
+
+    return [init_umum_data,init_ktp_data,init_domisili_data]
+
