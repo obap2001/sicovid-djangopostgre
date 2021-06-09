@@ -34,11 +34,11 @@ def create_faskes_view(request):
             nama_faskes = form_umum.cleaned_data['nama_faskes']
             status_kepemilikan = form_umum.cleaned_data['status_kepemilikan']
 
-            jalan = form_umum.cleaned_data['jalan']
-            kelurahan = form_umum.cleaned_data['kelurahan']
-            kecamatan = form_umum.cleaned_data['kecamatan']
-            kabupaten_kota = form_umum.cleaned_data['kabupaten_kota']
-            provinsi = form_umum.cleaned_data['provinsi']
+            jalan = form_alamat.cleaned_data['jalan']
+            kelurahan = form_alamat.cleaned_data['kelurahan']
+            kecamatan = form_alamat.cleaned_data['kecamatan']
+            kabupaten_kota = form_alamat.cleaned_data['kabupaten_kota']
+            provinsi = form_alamat.cleaned_data['provinsi']
 
             # Insert Data on table
             with connection.cursor() as cursor:
@@ -73,3 +73,12 @@ def list_faskes_view(request):
 
     else:
         return redirect('home')
+
+def detail_faskes_view(request):
+    pass
+
+def update_faskes_view(request):
+    pass
+
+def delete_faskes_view(request):
+    pass
