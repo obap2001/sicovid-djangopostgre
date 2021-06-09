@@ -176,7 +176,19 @@ def update_daftar_pasien_view(request,nik):
         return redirect('home')
 
 def delete_daftar_pasien_view(request,nik):
-    pass
+    if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
+        # Deleting data in SQL
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f'''
+                DELETE FROM PASIEN
+                WHERE NIK = '{nik}';
+                '''
+            )
+        messages.success(request, f'Data Pasien dengan NIK {nik} berhasil dihapus')
+        return redirect('daftar_pasien')
+    else:
+        return redirect('home')
 
 def fetch_data_pasien(nik):
     data_pasien = []
