@@ -56,6 +56,7 @@ def create_daftar_pasien_view(request):
                         '''
                     )
             messages.success(request, f'Pasien {nama} Berhasil Ditambahkan')
+            return redirect('daftar_pasien')
 
         return render(request,'create_pasien.html',response)
     else:
