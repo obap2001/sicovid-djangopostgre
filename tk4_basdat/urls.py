@@ -24,5 +24,6 @@ urlpatterns = [
     path('register/', include('register.urls')),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    path('daftar_pasien/', include('pendaftaran_pasien.urls')),
     path('', home_view, name='home')
 ]
