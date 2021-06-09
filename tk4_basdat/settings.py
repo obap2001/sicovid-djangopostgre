@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'register',
     'crispy_forms',
     'login',
-    'pendaftaran_pasien'
+    'pendaftaran_pasien',
+    'reservasi_rumah_sakit'
 ]
 
 MIDDLEWARE = [
