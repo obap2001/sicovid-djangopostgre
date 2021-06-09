@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.db import connection
 from django.shortcuts import render,redirect
 from .forms import CreateFaskesForm,CreateFaskesAlamatForm
+from .forms import DetailFaskesAlamatForm, DetailFaskesForm
 
 # Create your views here.
 def create_faskes_view(request):
@@ -74,11 +75,60 @@ def list_faskes_view(request):
     else:
         return redirect('home')
 
-def detail_faskes_view(request):
+def detail_faskes_view(request,kode):
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
+        response = {}
+        data_faskes = fetch_data_faskes(kode)
+
+        # Check Data_faskes
+        if not data_faskes:
+            messages.error(request,'Data Faskes Tidak Diemukan')
+            return redirect('home')
+
+        #Instantiate Form
+        form_umum = DetailFaskesForm(request.POST or None, initial=data_faskes[0])
+        form_alamat = DetailFaskesAlamatForm(request.POST or None, initial=data_faskes[1])
+
+        # Passing form to response
+        response['form_umum'] = form_umum
+        response['form_alamat'] = form_alamat
+
+        return render(request,'detail_faskes.html',response)
+
+    else:
+        return redirect('home')
+
+
+def update_faskes_view(request,kode):
     pass
 
-def update_faskes_view(request):
+def delete_faskes_view(request,kode):
     pass
 
-def delete_faskes_view(request):
-    pass
+def fetch_data_faskes(kode):
+    data_faskes = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f'''SELECT * FROM FASKES where KODE='{kode}' '''
+        )
+        data_faskes = cursor.fetchone()
+
+    if not data_faskes:
+        return False
+
+    init_umum_data = {
+        'kode_faskes' : data_faskes[0],
+        'tipe' : data_faskes[1],
+        'nama_faskes' : data_faskes[2],
+        'status_kepemilikan' : data_faskes[3]
+    }
+
+    init_alamat_data = {
+        'jalan'  : data_faskes[4],
+        'kelurahan' : data_faskes[5],
+        'kecamatan' : data_faskes[6],
+        'kabupaten_kota' : data_faskes[7],
+        'provinsi' : data_faskes[8]
+    }
+
+    return (init_umum_data, init_alamat_data)

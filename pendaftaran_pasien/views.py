@@ -93,7 +93,7 @@ def detail_daftar_pasien_view(request,nik):
         response = {}
         data_pasien = fetch_data_pasien(nik)
 
-        # Fetch Data Pasien
+        # Check Data Pasien
         if not data_pasien:
             messages.error(request,'Data Pasien Tidak Diemukan')
             return redirect('home')
