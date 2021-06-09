@@ -3,6 +3,7 @@ from django.db import connection
 from django.shortcuts import render,redirect
 from .forms import CreateFaskesForm,CreateFaskesAlamatForm
 from .forms import DetailFaskesAlamatForm, DetailFaskesForm
+from .forms import UpdateFaskesAlamatForm, UpdateFaskesForm
 
 # Create your views here.
 def create_faskes_view(request):
@@ -100,10 +101,72 @@ def detail_faskes_view(request,kode):
 
 
 def update_faskes_view(request,kode):
-    pass
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
+        response = {}
+        data_faskes = fetch_data_faskes(kode)
+
+        # Check Data_faskes
+        if not data_faskes:
+            messages.error(request,'Data Faskes Tidak Diemukan')
+            return redirect('home')
+
+        #Instantiate Form
+        form_umum = UpdateFaskesForm(request.POST or None, initial=data_faskes[0])
+        form_alamat = UpdateFaskesAlamatForm(request.POST or None, initial=data_faskes[1])
+
+        # Passing form to response
+        response['form_umum'] = form_umum
+        response['form_alamat'] = form_alamat
+
+        # Form Validation
+        if request.method == 'POST' and form_umum.is_valid() and form_alamat.is_valid():
+            tipe = form_umum.cleaned_data['tipe']
+            nama_faskes = form_umum.cleaned_data['nama_faskes']
+            status_kepemilikan = form_umum.cleaned_data['status_kepemilikan']
+
+            jalan = form_alamat.cleaned_data['jalan']
+            kelurahan = form_alamat.cleaned_data['kelurahan']
+            kecamatan = form_alamat.cleaned_data['kecamatan']
+            kabupaten_kota = form_alamat.cleaned_data['kabupaten_kota']
+            provinsi = form_alamat.cleaned_data['provinsi']
+
+            with connection.cursor() as cursor:
+                cursor.execute(f'''
+                UPDATE FASKES SET
+                tipe = '{tipe}',
+                nama = '{nama_faskes}',
+                statusmilik = '{status_kepemilikan}',
+                jalan = '{jalan}',
+                kelurahan = '{kelurahan}',
+                kecamatan = '{kecamatan}',
+                kabkot = '{kabupaten_kota}',
+                prov = '{provinsi}'
+                WHERE kode = '{kode}';
+                ''')
+
+            messages.success(request,'Data Faskes Berhasil diubah')
+            return redirect('detail_faskes', kode=kode)
+
+        return render(request,'update_faskes.html',response)
+
+    else:
+        return redirect('home')
+
 
 def delete_faskes_view(request,kode):
-    pass
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
+        # Deleting data in SQL
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f'''
+                DELETE FROM FASKES
+                WHERE kode = '{kode}';
+                '''
+            )
+        messages.success(request, f'Data Faskes dengan kode {kode} berhasil dihapus')
+        return redirect('list_faskes')
+    else:
+        return redirect('home')
 
 def fetch_data_faskes(kode):
     data_faskes = []
