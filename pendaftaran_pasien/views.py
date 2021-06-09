@@ -2,6 +2,7 @@ from django.db import connection
 from django.shortcuts import redirect, render
 from .forms import CreatePasienForm, CreatePasienDomisiliAlamatForm, CreatePasienKTPAlamatForm
 from .forms import DetailPasienForm, DetailPasienDomisiliAlamatForm, DetailPasienKTPAlamatForm
+from .forms import UpdatePasienForm, UpdatePasienDomisiliAlamatForm, UpdatePasienKTPAlamatForm
 from django.contrib import messages
 
 # Create your views here.
@@ -122,16 +123,54 @@ def update_daftar_pasien_view(request,nik):
             return redirect('home')
 
         # Instantiate Form
-        form_umum = DetailPasienForm(request.POST,initial=data_pasien[0])
-        form_KTP = DetailPasienKTPAlamatForm(request.POST, initial=data_pasien[1])
-        form_domisili = DetailPasienDomisiliAlamatForm(request.POST, initial=data_pasien[2])
+        form_umum = UpdatePasienForm(request.POST or None,initial=data_pasien[0])
+        form_KTP = UpdatePasienKTPAlamatForm(request.POST or None,initial=data_pasien[1])
+        form_domisili = UpdatePasienDomisiliAlamatForm(request.POST or None,initial=data_pasien[2])
 
         # Passing Form to Templates
         response['form_umum'] = form_umum
         response['form_KTP'] = form_KTP
         response['form_domisili'] = form_domisili
 
-        return render(request,'detail_pasien.html',response)
+         #Form validation
+        if request.method == 'POST' and form_umum.is_valid() and form_KTP.is_valid() and form_domisili.is_valid():
+            nomor_telepon = form_umum.cleaned_data['nomor_telepon']
+            nomor_hp = form_umum.cleaned_data['nomor_hp']
+
+            jalan_ktp = form_KTP.cleaned_data['jalan']
+            kelurahan_ktp = form_KTP.cleaned_data['kelurahan']
+            kecamatan_ktp = form_KTP.cleaned_data['kecamatan']
+            kabupaten_kota_ktp = form_KTP.cleaned_data['kabupaten_kota']
+            provinsi_ktp = form_KTP.cleaned_data['provinsi']
+
+            jalan_domisili = form_domisili.cleaned_data['jalan']
+            kelurahan_domisili = form_domisili.cleaned_data['kelurahan']
+            kecamatan_domisili = form_domisili.cleaned_data['kecamatan']
+            kabupaten_kota_domisili = form_domisili.cleaned_data['kabupaten_kota']
+            provinsi_domisili = form_domisili.cleaned_data['provinsi']
+
+            with connection.cursor() as cursor:
+                    cursor.execute(f'''
+                        UPDATE PASIEN
+                        SET ktp_jalan = '{jalan_ktp}',
+                        ktp_kelurahan = '{kelurahan_ktp}',
+                        ktp_kecamatan = '{kecamatan_ktp}',
+                        ktp_kabkot = '{kabupaten_kota_ktp}',
+                        ktp_prov = '{provinsi_ktp}',
+                        dom_jalan = '{jalan_domisili}',
+                        dom_kelurahan = '{kelurahan_domisili}',
+                        dom_kecamatan = '{kecamatan_domisili}',
+                        dom_kabkot = '{kabupaten_kota_domisili}',
+                        dom_prov = '{provinsi_domisili}',
+                        notelp = '{nomor_telepon}',
+                        nohp = '{nomor_hp}'
+                        WHERE nik = '{nik}';
+                    ''')
+
+            messages.success(request,'Data Pasien Berhasil diubah')
+            return redirect('detail_pasien', nik=nik)
+
+        return render(request,'update_pasien.html',response)
 
     else:
         return redirect('home')
