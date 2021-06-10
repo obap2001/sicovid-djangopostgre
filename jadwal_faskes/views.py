@@ -17,7 +17,7 @@ def create_jadwal_faskes_view(request):
 
         # validate form
         if request.method == 'POST' and form_jadwal.is_valid():
-            kode_faskes = form_jadwal.cleaned_data['kode_faskes']
+            faskes = form_jadwal.cleaned_data['faskes']
             shift = form_jadwal.cleaned_data['shift']
             tanggal = form_jadwal.cleaned_data['tanggal']
             tanggal = tanggal.strftime('%Y-%m-%d')
@@ -26,7 +26,7 @@ def create_jadwal_faskes_view(request):
             with connection.cursor() as cursor:
                 cursor.execute(f'''
                 INSERT INTO jadwal values
-                ('{kode_faskes}','{shift}','{tanggal}')
+                ('{faskes}','{shift}','{tanggal}')
                 ''')
             messages.success(request,f'Jadwal Berhasil Ditambahkan')
             return redirect('list_jadwal')

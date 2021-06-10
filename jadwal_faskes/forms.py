@@ -9,10 +9,17 @@ def fetch_data_faskes():
             'SELECT kode, nama from FASKES;'
         )
         fetch_data_faskes = cursor.fetchall()
-    return tuple(fetch_data_faskes)
+
+    # Organized the data
+    data_organized = []
+    for i in fetch_data_faskes:
+        temp = (i[0],f'({i[0]}) {i[1]}')
+        data_organized.append(temp)
+
+    return tuple(data_organized)
 
 
 class CreateJadwalFaskesForm(forms.Form):
-    kode_faskes = forms.ChoiceField(label='Kode Faskes', choices=fetch_data_faskes(), required=True)
+    faskes = forms.ChoiceField(choices=fetch_data_faskes(), required=True)
     shift = forms.CharField(max_length=15, required=True)
     tanggal= forms.DateField(required=True, input_formats=DATE_INPUT_FORMATS)

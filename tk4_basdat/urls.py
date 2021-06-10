@@ -27,5 +27,6 @@ urlpatterns = [
     path('daftar_pasien/', include('pendaftaran_pasien.urls')),
     path('faskes/', include('faskes.urls')),
     path('jadwal_faskes/', include('jadwal_faskes.urls')),
+    path('rumah_sakit/',include('rumah_sakit.urls')),
     path('', home_view, name='home')
 ]

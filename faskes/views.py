@@ -145,7 +145,7 @@ def update_faskes_view(request,kode):
                 ''')
 
             messages.success(request,'Data Faskes Berhasil diubah')
-            return redirect('detail_faskes', kode=kode)
+            return redirect('list_faskes')
 
         return render(request,'update_faskes.html',response)
 
