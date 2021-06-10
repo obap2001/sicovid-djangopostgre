@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'login',
     'pendaftaran_pasien',
     'faskes',
-    'jadwal_faskes'
+    'jadwal_faskes',
+    'rumah_sakit'
 ]
 
 MIDDLEWARE = [
