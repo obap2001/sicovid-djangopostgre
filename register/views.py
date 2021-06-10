@@ -71,7 +71,7 @@ def registerPenggunaPublik(request):
                     insert into siruco.akun_pengguna values
                     ('{email}','{password}' ,'PENGGUNA_PUBLIK');
                     insert into siruco.pengguna_publik values
-                    ('{email}', '{nik}', '{nama}', 'AKTIF', '{noHP}', 'PENGGUNA_PUBLIK', '{noHP}');
+                    ('{email}', '{nik}', '{nama}', 'AKTIF', 'PENGGUNA_PUBLIK', '{noHP}');
                     '''
                 )
                 messages.success(request,'Successfully Registered as Pengguna Publik')
