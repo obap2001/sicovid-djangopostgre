@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title> {{register}} </title>
+    <title> Create Jadwal </title>
 {% endblock title %}
 
 {% load crispy_forms_tags %}
 {% block content  %}
+    <h1 class="display-4">Create Jadwal</h1>
+    <hr class="my-4">
     <form method = "POST">
         {% csrf_token %}
-        {{ form|crispy }}
-    <input class="btn btn-light" type="submit" value="Submit">
+        {{ form_jadwal|crispy }}
+    <input class="btn btn-light" name="num" type="submit" value="Submit">
     </form>
 {% endblock  %}
