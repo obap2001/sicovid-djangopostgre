@@ -24,5 +24,6 @@ urlpatterns = [
     path('register/', include('register.urls')),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    path('', home_view, name='home')
+    path('', home_view, name='home'),
+    path('cr_jadwal_dokter/', include('cr_jadwal_dokter.urls'))
 ]

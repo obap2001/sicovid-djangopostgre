@@ -102,9 +102,9 @@
             <a class="dropdown-item" href="#">List Pasien</a>
             {% endif %}
             {% if request.session.peran == 'DOKTER' %}
-            <a class="dropdown-item" href="#">Buat Jadwal Dokter</a>
+            <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter_sendiri' %}">Buat Jadwal Dokter</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Jadwal Dokter</a> <!-- bisa diliat semua-->
+            <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter' %}">List Jadwal Dokter</a> <!-- bisa diliat semua-->
             {% if request.session.peran == 'ADMIN_SATGAS' %}
             <a class="dropdown-item" href="#">Buat Ruangan RS</a>
             <a class="dropdown-item" href="#">List Ruangan RS</a>
@@ -112,7 +112,9 @@
             <a class="dropdown-item" href="#">List Bed RS</a>
             <a class="dropdown-item" href="#">Buat Reservasi RS</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Reservasi RS</a> 
+            {% if request.session.peran == 'ADMIN_SATGAS' or request.session.peran == 'PENGGUNA_PUBLIK' %}
+            <a class="dropdown-item" href="#">List Reservasi RS</a>
+            {% endif %} 
           </div>
         </li>
         {% endif %}
@@ -166,5 +168,4 @@
   </div>
 
 </body>
-
 </html>

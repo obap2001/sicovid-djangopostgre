@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'base_html',
     'register',
     'crispy_forms',
-    'login'
+    'login',
+    'cr_jadwal_dokter'
 ]
 
 MIDDLEWARE = [

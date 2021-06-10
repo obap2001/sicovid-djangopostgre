@@ -140,7 +140,7 @@ def registerDokter(request):
     response['form'] = form
     response['title'] = 'Register Dokter'
     if request.method == 'POST' and form.is_valid():
-        email = form.cleaned_data['username']
+        email = form.cleaned_data['email']
         password = form.cleaned_data['password']
         noSTR = form.cleaned_data['noSTR']
         nama = form.cleaned_data['nama']
