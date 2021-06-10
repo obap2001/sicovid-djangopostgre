@@ -22,10 +22,26 @@ def fetch_data_rs():
 
     return tuple(data_organized)
 
+def fetch_data_rs_not_filter():
+    fetch_data_rs = []
+    with connection.cursor() as cursor:
+        cursor.execute('''
+        SELECT F.kode, F.nama from FASKES F;
+        ''')
+        fetch_data_rs = cursor.fetchall()
+
+    # Organized the data
+    data_organized = []
+    for i in fetch_data_rs:
+        temp = (i[0],f'({i[0]}) {i[1]}')
+        data_organized.append(temp)
+
+    return tuple(data_organized)
+
 class CreateRSForm(forms.Form):
     faskes = forms.ChoiceField(choices=fetch_data_rs(), required=True)
     rujukan = forms.BooleanField(required=True)
 
 class UpdateRSForm(forms.Form):
-    faskes = forms.ChoiceField(disabled=True,choices=fetch_data_rs(), required=True)
+    faskes = forms.ChoiceField(disabled=True,choices=fetch_data_rs_not_filter(), required=True)
     rujukan = forms.BooleanField(required=True)

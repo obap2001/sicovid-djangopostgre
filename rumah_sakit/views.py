@@ -67,7 +67,7 @@ def update_rs_view(request,kode_faskes):
             cursor.execute(
                 f'''SELECT * FROM RUMAH_SAKIT where kode_faskes='{kode_faskes}' '''
             )
-            data_rs = cursor.fetchone()
+            data_rs = list(cursor.fetchone())
 
         if data_rs[1] == '0':
             data_rs[1] = False
@@ -81,13 +81,33 @@ def update_rs_view(request,kode_faskes):
         }
 
         # Instantiate Form
-        form = UpdateRSForm(request.POST or None, initial=init_rs_data)
+        form_rs = UpdateRSForm(request.POST or None, initial=init_rs_data)
 
         # Posting form to response
-        response['form_rs'] = form
+        response['form_rs'] = form_rs
 
+        # Form Validation
+        if request.method == 'POST' and form_rs.is_valid():
+            faskes = form_rs.cleaned_data['faskes']
+            rujukan = form_rs.cleaned_data['rujukan']
+
+            is_rujukan = None
+            if rujukan:
+                is_rujukan = 1
+            else:
+                is_rujukan = 0
+
+            with connection.cursor() as cursor:
+                cursor.execute(f'''
+                UPDATE RUMAH_SAKIT SET
+                isrujukan = '{is_rujukan}'
+                WHERE kode_faskes = '{faskes}';
+                ''')
+
+            messages.success(request,'Data Rumah sakit Berhasil diubah')
+            return redirect('list_rs')
 
         return render(request, 'update_rs.html',response)
 
-
-        # Fetch Data
+    else:
+        return redirect('home')
