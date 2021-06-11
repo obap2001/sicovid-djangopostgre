@@ -16,14 +16,21 @@ def create_faskes_view(request):
             cursor.execute('SELECT kode FROM faskes')
             id_all = cursor.fetchall()
 
-        print(id_all)
+        # Cleaned data
+        data_clean = []
+        for i in id_all:
+            data_clean.append(i[0])
 
         # Generate all possible id
-        for i in range(100):
+        id_now = ''
+        for i in range(1,100):
             if i < 10 :
-                id_now = 'F0' + str(id_now)
+                id_now = 'F0' + str(i)
             else:
-                id_now = 'F' + str(id_now)
+                id_now = 'F' + str(i)
+
+            if id_now not in data_clean:
+                break
 
         # Instantiate Form
         inital_data = {'kode_faskes' : id_now}
