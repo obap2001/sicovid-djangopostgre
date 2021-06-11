@@ -29,6 +29,8 @@ def create_reservasi_rs_view(request):
             return redirect('list_reservasi')
 
         return render(request,'create_reservasi_rs.html',response)
+    else:
+        return redirect('home')
 
 def list_reservasi_rs_view(request):
     if 'username' in request.session and (request.session['peran'] == 'ADMIN_SATGAS' or request.session['peran'] == 'PENGGUNA_PUBLIK' ):
@@ -54,7 +56,7 @@ def list_reservasi_rs_view(request):
         return render(request,'list_reservasi_rs.html',response)
 
     else:
-        return render('home')
+        return redirect('home')
 
 def update_reservasi_rs_view(request,kode_pasien,tanggal):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
@@ -100,7 +102,7 @@ def update_reservasi_rs_view(request,kode_pasien,tanggal):
         return render(request,'update_reservasi_rs.html',response)
 
     else:
-        return render('home')
+        return redirect('home')
 
 def delete_reservasi_rs_view(request,kode_pasien,tanggal):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
@@ -118,7 +120,7 @@ def delete_reservasi_rs_view(request,kode_pasien,tanggal):
         return redirect('list_reservasi')
 
     else:
-        return render('home')
+        return redirect('home')
 
 
 def fetch_data_ruangan(request):
