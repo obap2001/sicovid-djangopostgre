@@ -26,7 +26,7 @@ def registerAdminSistem(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco; 
+                    f'''set search_path to siruco;
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'ADMIN_SISTEM');
                     insert into admin values
