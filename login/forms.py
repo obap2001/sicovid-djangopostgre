@@ -9,7 +9,9 @@ class loginForm(forms.Form):
 
     def clean(self):
         form_data = self.cleaned_data
-        if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
+        form_password = form_data['password']
+        check = re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_password)
+        if not check:
             raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
 
 

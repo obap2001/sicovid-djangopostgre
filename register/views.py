@@ -12,7 +12,7 @@ def registerAdminSistem(request):
     response = {}
 
     # Institiate The Form
-    form = adminSistemRegisterForm(request.POST)
+    form = adminSistemRegisterForm(request.POST or None)
 
     # Assigning data for response
     response['form'] = form
@@ -52,7 +52,7 @@ def registerAdminSistem(request):
 
 def registerPenggunaPublik(request):
     response = {}
-    form = penggunaPublikRegisterForm(request.POST)
+    form = penggunaPublikRegisterForm(request.POST or None)
     response['form'] = form
     response['title'] = 'Register Pengguna Publik'
     if request.method == 'POST' and form.is_valid():
@@ -92,7 +92,7 @@ def registerPenggunaPublik(request):
 
 def registerAdminSatgas(request):
     response = {}
-    form = adminSatgasRegisterForm(request.POST)
+    form = adminSatgasRegisterForm(request.POST or None)
     response['form'] = form
     response['title'] = 'Register Admin Satgas'
     if request.method == 'POST' and form.is_valid():
@@ -131,7 +131,7 @@ def registerAdminSatgas(request):
 
 def registerDokter(request):
     response = {}
-    form = adminDokterRegisterForm(request.POST)
+    form = adminDokterRegisterForm(request.POST or None)
     response['form'] = form
     response['title'] = 'Register Dokter'
     if request.method == 'POST' and form.is_valid():

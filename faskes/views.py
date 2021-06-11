@@ -11,15 +11,19 @@ def create_faskes_view(request):
         response = {}
 
         # Count ID
-        id_now = 0
+        id_all = []
         with connection.cursor() as cursor:
-            cursor.execute('SELECT count(kode) FROM faskes')
-            id_now = cursor.fetchone()[0] + 1
+            cursor.execute('SELECT kode FROM faskes')
+            id_all = cursor.fetchall()
 
-        if id_now < 10 :
-            id_now = 'F0' + str(id_now)
-        else:
-            id_now = 'F' + str(id_now)
+        print(id_all)
+
+        # Generate all possible id
+        for i in range(100):
+            if i < 10 :
+                id_now = 'F0' + str(id_now)
+            else:
+                id_now = 'F' + str(id_now)
 
         # Instantiate Form
         inital_data = {'kode_faskes' : id_now}

@@ -10,7 +10,7 @@ def login_view(request):
 
     else:
         response = {}
-        form = loginForm(request.POST)
+        form = loginForm(request.POST or None)
         response['form'] = form
         response['title'] = 'Register Pengguna Publik'
 
