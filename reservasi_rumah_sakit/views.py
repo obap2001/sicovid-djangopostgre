@@ -26,7 +26,7 @@ def create_reservasi_rs_view(request):
                     ''')
 
             messages.success(request, 'Data Reservasi Behasil ditambahkan')
-            return redirect('list_reservasi')
+            return redirect('list_reservasi_rs')
 
         return render(request,'create_reservasi_rs.html',response)
     else:
@@ -97,7 +97,7 @@ def update_reservasi_rs_view(request,kode_pasien,tanggal):
                     ''')
 
             messages.success(request, 'Data Reservasi Behasil diubah')
-            return redirect('list_reservasi')
+            return redirect('list_reservasi_rs')
 
         return render(request,'update_reservasi_rs.html',response)
 
@@ -117,7 +117,7 @@ def delete_reservasi_rs_view(request,kode_pasien,tanggal):
                 '''
             )
         messages.success(request, f'Data Reservasi berhasil dihapus')
-        return redirect('list_reservasi')
+        return redirect('list_reservasi_rs')
 
     else:
         return redirect('home')

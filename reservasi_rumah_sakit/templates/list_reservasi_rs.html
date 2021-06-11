@@ -9,7 +9,7 @@
     <h1 class="display-4">List Reservasi RS</h1>
     <hr class="my-4">
     {% if request.session.peran == "ADMIN_SATGAS" %}
-        <a class="btn btn-primary" href="{% url 'create_reservasi' %}" role="button">CREATE</a>
+        <a class="btn btn-primary" href="{% url 'create_reservasi_rs' %}" role="button">CREATE</a>
     {% endif %}
 
     <table class="table">
@@ -39,8 +39,8 @@
       <td>{{ i.6 }}</td>
       {% if request.session.peran == "ADMIN_SATGAS" %}
       <td>
-        <a class="btn btn-primary" href="{% url 'update_reservasi' kode_pasien=i.1 tanggal=i.2 %}" role="button">UPDATE</a>
-        <a class="btn btn-primary" href="{% url 'delete_reservasi' kode_pasien=i.1 tanggal=i.2 %}" role="button">DELETE</a>
+        <a class="btn btn-primary" href="{% url 'update_reservasi_rs' kode_pasien=i.1 tanggal=i.2 %}" role="button">UPDATE</a>
+        <a class="btn btn-primary" href="{% url 'delete_reservasi_rs' kode_pasien=i.1 tanggal=i.2 %}" role="button">DELETE</a>
         </td>
         {% endif %}
     </tr>
