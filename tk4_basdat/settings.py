@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'reservasi_rumah_sakit',
     'faskes',
     'jadwal_faskes',
-    'rumah_sakit'
+    'rumah_sakit',
+    'transaksi_rumah_sakit'
 ]
 
 MIDDLEWARE = [
@@ -151,3 +152,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
+DATETIME_INPUT_FORMATS = ['%d-%m-%Y %H:%M:%S']
