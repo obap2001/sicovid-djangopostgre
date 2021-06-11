@@ -66,11 +66,11 @@ def list_daftar_pasien_view(request):
     if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
         data_pasien = [] #Init data_pasien
-
+        user_now = request.session['username']
         # Fetch Pasien Data
         with connection.cursor() as cursor:
             cursor.execute(
-                f'SELECT NIK, Nama FROM PASIEN;'
+                f'SELECT NIK, Nama FROM PASIEN WHERE idpendaftar={user_now} ;'
             )
             data_pasien = cursor.fetchall()
             response['data_pasien'] = data_pasien
