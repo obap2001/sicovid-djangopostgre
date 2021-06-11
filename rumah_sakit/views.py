@@ -37,7 +37,7 @@ def create_rs_view(request):
         return render(request,'create_rs.html',response)
 
     else:
-        return render('home')
+        return redirect('home')
 
 def list_rs_view(request):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
@@ -55,7 +55,7 @@ def list_rs_view(request):
         return render(request,'list_rs.html',response)
 
     else:
-        return render('home')
+        return redirect('home')
 
 def update_rs_view(request,kode_faskes):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':

@@ -67,8 +67,8 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pasien</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'PENGGUNA_PUBLIK' %}
-            <a class="dropdown-item" href="#">Pendaftaran Pasien</a>
-            <a class="dropdown-item" href="#">List Pasien</a>
+            <a class="dropdown-item" href="{% url 'create_pasien' %}">Pendaftaran Pasien</a>
+            <a class="dropdown-item" href="{% url 'list_pasien' %}">List Pasien</a>
             {% endif %}
             {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
             <a class="dropdown-item" href="#">Buat Appointment</a>
@@ -88,8 +88,8 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rumah Sakit</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="#">Buat RS</a>
-            <a class="dropdown-item" href="#">List Pasien</a>
+            <a class="dropdown-item" href="{% url 'create_rs' %}">Buat RS</a>
+            <a class="dropdown-item" href="{% url 'list_rs' %}">List Pasien</a>
             {% endif %}
             {% if request.session.peran == 'DOKTER' %}
             <a class="dropdown-item" href="#">Buat Jadwal Dokter</a>
@@ -100,9 +100,9 @@
             <a class="dropdown-item" href="#">List Ruangan RS</a>
             <a class="dropdown-item" href="#">Buat Bed RS</a>
             <a class="dropdown-item" href="#">List Bed RS</a>
-            <a class="dropdown-item" href="#">Buat Reservasi RS</a>
+            <a class="dropdown-item" href="{% url 'create_reservasi_rs' %}">Buat Reservasi RS</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Reservasi RS</a> 
+            <a class="dropdown-item" href="{% url 'list_reservasi' %}">List Reservasi RS</a> 
           </div>
         </li>
         {% endif %}
@@ -118,7 +118,7 @@
             <a class="dropdown-item" href="#">Bayar Transaksi Hotel</a>
             {% endif %}
             {% if request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="#">List Transaksi RS</a>
+            <a class="dropdown-item" href="{% url 'list_transaksi_rs' %}">List Transaksi RS</a>
             <a class="dropdown-item" href="#">List Transaksi Hotel</a>
             {% endif %}
             <a class="dropdown-item" href="#">List Transaksi Booking Hotel</a>
@@ -133,8 +133,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Faskes</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Buat Faskes</a>
-            <a class="dropdown-item" href="#">List Faskes</a>
+            <a class="dropdown-item" href="{% url 'create_faskes' %}">Buat Faskes</a>
+            <a class="dropdown-item" href="{% url 'list_faskes' %}">List Faskes</a>
           </div>
         </li>
         {% endif %}

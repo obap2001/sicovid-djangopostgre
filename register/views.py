@@ -1,3 +1,4 @@
+
 from django.http import response
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -11,7 +12,7 @@ def registerAdminSistem(request):
     response = {}
 
     # Institiate The Form
-    form = adminSistemRegisterForm(request.POST)
+    form = adminSistemRegisterForm(request.POST or None)
 
     # Assigning data for response
     response['form'] = form
@@ -26,7 +27,7 @@ def registerAdminSistem(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco; 
+                    f'''
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'ADMIN_SISTEM');
                     insert into admin values
@@ -46,14 +47,12 @@ def registerAdminSistem(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request,'register.html',response)
 
 def registerPenggunaPublik(request):
     response = {}
-    form = penggunaPublikRegisterForm(request.POST)
+    form = penggunaPublikRegisterForm(request.POST or None)
     response['form'] = form
     response['title'] = 'Register Pengguna Publik'
     if request.method == 'POST' and form.is_valid():
@@ -68,9 +67,9 @@ def registerPenggunaPublik(request):
             try:
                 cursor.execute(
                     f'''
-                    insert into siruco.akun_pengguna values
+                    insert into akun_pengguna values
                     ('{email}','{password}' ,'PENGGUNA_PUBLIK');
-                    insert into siruco.pengguna_publik values
+                    insert into pengguna_publik values
                     ('{email}', '{nik}', '{nama}', 'AKTIF', 'PENGGUNA_PUBLIK', '{noHP}');
                     '''
                 )
@@ -88,14 +87,12 @@ def registerPenggunaPublik(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request, 'register.html',response)
 
 def registerAdminSatgas(request):
     response = {}
-    form = adminSatgasRegisterForm(request.POST)
+    form = adminSatgasRegisterForm(request.POST or None)
     response['form'] = form
     response['title'] = 'Register Admin Satgas'
     if request.method == 'POST' and form.is_valid():
@@ -107,7 +104,7 @@ def registerAdminSatgas(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco; 
+                    f''' 
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'ADMIN_SATGAS');
                     insert into admin values ('{email}');
@@ -122,21 +119,19 @@ def registerAdminSatgas(request):
             except InternalError:
                 # Check if user already regitstered or not
                 cursor.execute(
-                    f'''set search_path to siruco;
+                    f'''
                     SELECT USERNAME,PERAN FROM AKUN_PENGGUNA
                     WHERE USERNAME='{email}';'''
                     )
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request,'register.html',response)
 
 def registerDokter(request):
     response = {}
-    form = adminDokterRegisterForm(request.POST)
+    form = adminDokterRegisterForm(request.POST or None)
     response['form'] = form
     response['title'] = 'Register Dokter'
     if request.method == 'POST' and form.is_valid():
@@ -152,7 +147,7 @@ def registerDokter(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco; 
+                    f'''
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'DOKTER');
                     insert into admin values ('{email}');
@@ -172,7 +167,5 @@ def registerDokter(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request,'register.html',response)

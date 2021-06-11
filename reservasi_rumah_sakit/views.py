@@ -26,9 +26,11 @@ def create_reservasi_rs_view(request):
                     ''')
 
             messages.success(request, 'Data Reservasi Behasil ditambahkan')
-            return redirect('list_reservasi')
+            return redirect('list_reservasi_rs')
 
         return render(request,'create_reservasi_rs.html',response)
+    else:
+        return redirect('home')
 
 def list_reservasi_rs_view(request):
     if 'username' in request.session and (request.session['peran'] == 'ADMIN_SATGAS' or request.session['peran'] == 'PENGGUNA_PUBLIK' ):
@@ -54,7 +56,7 @@ def list_reservasi_rs_view(request):
         return render(request,'list_reservasi_rs.html',response)
 
     else:
-        return render('home')
+        return redirect('home')
 
 def update_reservasi_rs_view(request,kode_pasien,tanggal):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
@@ -95,12 +97,12 @@ def update_reservasi_rs_view(request,kode_pasien,tanggal):
                     ''')
 
             messages.success(request, 'Data Reservasi Behasil diubah')
-            return redirect('list_reservasi')
+            return redirect('list_reservasi_rs')
 
         return render(request,'update_reservasi_rs.html',response)
 
     else:
-        return render('home')
+        return redirect('home')
 
 def delete_reservasi_rs_view(request,kode_pasien,tanggal):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
@@ -114,11 +116,18 @@ def delete_reservasi_rs_view(request,kode_pasien,tanggal):
                 tglmasuk='{tanggal_splitted[2]}-{tanggal_splitted[1]}-{tanggal_splitted[0]}';
                 '''
             )
+            cursor.execute(
+                f'''
+                DELETE FROM TRANSAKSI_RS
+                WHERE kodepasien = '{kode_pasien}' and
+                tglmasuk='{tanggal_splitted[2]}-{tanggal_splitted[1]}-{tanggal_splitted[0]}';
+                '''
+            )
         messages.success(request, f'Data Reservasi berhasil dihapus')
-        return redirect('list_reservasi')
+        return redirect('list_reservasi_rs')
 
     else:
-        return render('home')
+        return redirect('home')
 
 
 def fetch_data_ruangan(request):
