@@ -46,7 +46,6 @@ def list_jadwal_view(request):
                 f'SELECT * FROM JADWAL;'
             )
             data_jadwal = cursor.fetchall()
-        print(data_jadwal)
 
         # Reorganize data
         data_organized = []

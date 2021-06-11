@@ -5,7 +5,30 @@ from .forms import CreateReservasiForm, UpdateReservasiForm
 
 # Create your views here.
 def create_reservasi_rs_view(request):
-    pass
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
+        response = {}
+
+        form_reservasi = CreateReservasiForm(request.POST or None)
+        response['form_reservasi'] = form_reservasi
+
+        if request.method == 'POST' and form_reservasi.is_valid():
+            nik = form_reservasi.cleaned_data['nik']
+            tanggal_masuk = form_reservasi.cleaned_data['tanggal_masuk'].strftime('%Y-%m-%d')
+            tanggal_keluar = form_reservasi.cleaned_data['tanggal_keluar'].strftime('%Y-%m-%d')
+            kode_rumah_sakit = form_reservasi.cleaned_data['kode_rumah_sakit']
+            kode_ruangan = form_reservasi.cleaned_data['kode_ruangan']
+            kode_bed = form_reservasi.cleaned_data['kode_bed']
+
+            with connection.cursor() as cursor:
+                    cursor.execute(f'''
+                        INSERT INTO RESERVASI_RS VALUES
+                        ('{nik}','{tanggal_masuk}','{tanggal_keluar}','{kode_rumah_sakit}','{kode_ruangan}','{kode_bed}')
+                    ''')
+
+            messages.success(request, 'Data Reservasi Behasil ditambahkan')
+            return redirect('list_reservasi')
+
+        return render(request,'create_reservasi_rs.html',response)
 
 def list_reservasi_rs_view(request):
     if 'username' in request.session and (request.session['peran'] == 'ADMIN_SATGAS' or request.session['peran'] == 'PENGGUNA_PUBLIK' ):
@@ -50,8 +73,8 @@ def update_reservasi_rs_view(request,kode_pasien,tanggal):
 
         init_reservasi= {
             'nik': data_reservasi[0],
-            'tanggal_masuk': data_reservasi[1],
-            'tanggal_keluar': data_reservasi[2],
+            'tanggal_masuk': data_reservasi[1].strftime('%d-%m-%Y'),
+            'tanggal_keluar': data_reservasi[2].strftime('%d-%m-%Y'),
             'kode_rumah_sakit': data_reservasi[3],
             'kode_ruangan': data_reservasi[4],
             'kode_bed': data_reservasi[5]
@@ -105,7 +128,7 @@ def fetch_data_ruangan(request):
     with connection.cursor() as cursor:
         cursor.execute(f'''
             SELECT koderuangan FROM RUANGAN_RS
-            WHERE koders='{rs}';
+            WHERE koders='{rs}' AND jmlbed > 0  ;
         ''')
         list_ruangan = cursor.fetchall()
 
@@ -116,3 +139,21 @@ def fetch_data_ruangan(request):
         cleaned_data.append(temp)
     return render(request, 'ruangan_dropdown.html', {'list_ruangan': cleaned_data})
 
+def fetch_data_bed(request):
+    rs = request.GET.get('rumah_sakit')
+    ruangan = request.GET.get('kode_ruangan')
+    list_bed = []
+
+    with connection.cursor() as cursor:
+        cursor.execute(f'''
+            SELECT kodebed FROM BED_RS
+            WHERE koders='{rs}' and koderuangan='{ruangan}';
+        ''')
+        list_bed = cursor.fetchall()
+
+    # Organized the data
+    cleaned_data = []
+    for i in list_bed:
+        temp= (i[0],i[0])
+        cleaned_data.append(temp)
+    return render(request, 'bed_dropdown.html', {'list_bed': cleaned_data})

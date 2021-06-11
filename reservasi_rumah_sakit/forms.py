@@ -12,7 +12,7 @@ def fetch_data_rs():
         faskes_data_choice = cursor.fetchall() #Will Get all output of the query
 
     # Organized the data
-    data_organized = []
+    data_organized = [('','-------')]
     for i in faskes_data_choice:
         temp = (i[0],i[0])
         data_organized.append(temp)
@@ -71,22 +71,26 @@ class CreateReservasiForm(forms.Form):
     tanggal_masuk = forms.DateField(label="Tanggal Masuk",required=True, input_formats=DATE_INPUT_FORMATS)
     tanggal_keluar = forms.DateField(label="Tanggal Keluar",required=True, input_formats=DATE_INPUT_FORMATS)
     kode_rumah_sakit = forms.ChoiceField(label="Kode Rumah Sakit", choices=fetch_data_rs(), required=True)
-    kode_ruangan = forms.ChoiceField(label="Kode Ruangan", choices=(), required=True)
-    kode_bed = forms.ChoiceField(label="Kode Bed", choices=(), required=True)
+    kode_ruangan = forms.CharField(label="Kode Ruangan", widget=forms.Select(choices=[]), required=True)
+    kode_bed = forms.CharField(label="Kode Bed", widget=forms.Select(choices=[]), required=True)
 
     def clean(self):
         form_data = self.cleaned_data
         if form_data['tanggal_keluar'] <= form_data['tanggal_masuk']:
-            raise ValidationError('Tanggal Keluar tidak boleh kurang dari Tanggal_masuk')
+            raise ValidationError('Tanggal Keluar tidak boleh kurang dari Tanggal Masuk')
 
 class UpdateReservasiForm(forms.Form):
     nik = forms.ChoiceField(disabled=True, label='NIK Pasien',choices=fetch_nik_pasien(),required = True)
     tanggal_masuk = forms.DateField(disabled=True,label="Tanggal Masuk",required=True, input_formats=DATE_INPUT_FORMATS)
     tanggal_keluar = forms.DateField(label="Tanggal Keluar",required=True, input_formats=DATE_INPUT_FORMATS)
     kode_rumah_sakit = forms.ChoiceField(disabled=True,label="Kode Rumah Sakit", choices=fetch_data_rs(), required=True)
-    kode_ruangan = forms.ChoiceField(disabled=False,label="Kode Ruangan", choices=fetch_data_ruangan_rs(), required=True)
+    kode_ruangan = forms.ChoiceField(disabled=True,label="Kode Ruangan", choices=fetch_data_ruangan_rs(), required=True)
     kode_bed = forms.ChoiceField(disabled=True,label="Kode Bed", choices=fetch_data_bed_rs(), required=True)
 
+    def clean(self):
+        form_data = self.cleaned_data
+        if form_data['tanggal_keluar'] <= form_data['tanggal_masuk']:
+            raise ValidationError('Tanggal Keluar tidak boleh kurang dari Tanggal Masuk')
 
 
 
