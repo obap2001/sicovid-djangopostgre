@@ -33,13 +33,6 @@ def registerAdminSistem(request):
                     insert into admin values
                     ('{email}');'''
                     )
-                cursor.execute(
-                    f'''
-                    insert into akun_pengguna values
-                    ('{email}','{password}' ,'ADMIN_SISTEM');
-                    insert into admin values
-                    ('{email}');'''
-                    )
                 messages.success(request,'Successfully Registered as Admin Sistem')
                 login(request,email,password)
                 return redirect('home')
@@ -74,9 +67,9 @@ def registerPenggunaPublik(request):
             try:
                 cursor.execute(
                     f'''
-                    insert into siruco.akun_pengguna values
+                    insert into akun_pengguna values
                     ('{email}','{password}' ,'PENGGUNA_PUBLIK');
-                    insert into siruco.pengguna_publik values
+                    insert into pengguna_publik values
                     ('{email}', '{nik}', '{nama}', 'AKTIF', 'PENGGUNA_PUBLIK', '{noHP}');
                     '''
                 )
@@ -111,7 +104,7 @@ def registerAdminSatgas(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco; 
+                    f''' 
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'ADMIN_SATGAS');
                     insert into admin values ('{email}');
@@ -126,7 +119,7 @@ def registerAdminSatgas(request):
             except InternalError:
                 # Check if user already regitstered or not
                 cursor.execute(
-                    f'''set search_path to siruco;
+                    f'''
                     SELECT USERNAME,PERAN FROM AKUN_PENGGUNA
                     WHERE USERNAME='{email}';'''
                     )
@@ -154,7 +147,7 @@ def registerDokter(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco; 
+                    f'''
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'DOKTER');
                     insert into admin values ('{email}');
