@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'login',
     'pendaftaran_pasien',
+    'reservasi_rumah_sakit',
     'faskes',
     'jadwal_faskes',
     'rumah_sakit'

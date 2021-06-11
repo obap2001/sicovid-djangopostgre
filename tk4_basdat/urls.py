@@ -25,6 +25,7 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('daftar_pasien/', include('pendaftaran_pasien.urls')),
+    path('reservasi_rumah_sakit/', include('reservasi_rumah_sakit.urls')),
     path('faskes/', include('faskes.urls')),
     path('jadwal_faskes/', include('jadwal_faskes.urls')),
     path('rumah_sakit/',include('rumah_sakit.urls')),
