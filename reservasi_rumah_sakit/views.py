@@ -116,6 +116,13 @@ def delete_reservasi_rs_view(request,kode_pasien,tanggal):
                 tglmasuk='{tanggal_splitted[2]}-{tanggal_splitted[1]}-{tanggal_splitted[0]}';
                 '''
             )
+            cursor.execute(
+                f'''
+                DELETE FROM TRANSAKSI_RS
+                WHERE kodepasien = '{kode_pasien}' and
+                tglmasuk='{tanggal_splitted[2]}-{tanggal_splitted[1]}-{tanggal_splitted[0]}';
+                '''
+            )
         messages.success(request, f'Data Reservasi berhasil dihapus')
         return redirect('list_reservasi_rs')
 
