@@ -1,3 +1,4 @@
+
 from django.http import response
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -26,7 +27,14 @@ def registerAdminSistem(request):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    f'''set search_path to siruco;
+                    f'''
+                    insert into akun_pengguna values
+                    ('{email}','{password}' ,'ADMIN_SISTEM');
+                    insert into admin values
+                    ('{email}');'''
+                    )
+                cursor.execute(
+                    f'''
                     insert into akun_pengguna values
                     ('{email}','{password}' ,'ADMIN_SISTEM');
                     insert into admin values
@@ -46,8 +54,6 @@ def registerAdminSistem(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request,'register.html',response)
 
@@ -88,8 +94,6 @@ def registerPenggunaPublik(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request, 'register.html',response)
 
@@ -129,8 +133,6 @@ def registerAdminSatgas(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request,'register.html',response)
 
@@ -172,7 +174,5 @@ def registerDokter(request):
                 data = cursor.fetchone()
                 if data: # Exception if user already register
                     messages.error(request,'User has already been registered')
-                else: # Exception if password does not match requirement
-                    messages.error(request,'Password must have at least 1 capital letters and 1 number')
 
     return render(request,'register.html',response)
