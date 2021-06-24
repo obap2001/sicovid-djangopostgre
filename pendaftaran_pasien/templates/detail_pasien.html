@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Detail Pasien </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Detail Pasien</h1>
+    <hr class="my-4">
+
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form_umum|crispy }}
+        <p>Alamat (Sesuai KTP):</p>
+        {{ form_KTP|crispy }}
+        <p>Alamat (Domisili):</p>
+        {{ form_domisili|crispy }}
+    </form>
+{% endblock  %}

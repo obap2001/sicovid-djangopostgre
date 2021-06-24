@@ -1,11 +1,55 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title> register </title>
+    <title> {{ title }} </title>
 {% endblock title %}
 
 {% load crispy_forms_tags %}
 {% block content  %}
+    <ul class="nav nav-pills nav-fill">
+    {% if title == "Register Pengguna Publik" %}
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Pengguna Publik</a>
+        </li>
+        {% else %}
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'register_pengguna_publik' %}">Pengguna Publik</a>
+        </li>
+    {% endif %}
+
+    {% if title == "Register Admin Sistem" %}
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Admin Sistem</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register_admin_sistem' %}">Admin Sistem</a>
+        </li>
+    {% endif %}
+
+    {% if title == "Register Admin Satgas" %}
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Admin Satgas</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register_admin_satgas' %}">Admin Satgas</a>
+        </li>
+    {% endif %}
+
+    {% if title == "Register Dokter" %}
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'register_dokter' %}">Dokter</a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register_dokter' %}">Dokter</a>
+        </li>
+    {% endif %}
+    </ul>
+        <hr class="my-4">
+    <h1 class="display-4">{{ title }} </h1>
+    <hr class="my-4">
     <form method = "POST">
         {% csrf_token %}
         {{ form|crispy }}

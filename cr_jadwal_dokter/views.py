@@ -15,9 +15,6 @@ def createJadwalDokter(request):
             shift = request.GET.get('shift')
             tanggal = datetime.strptime(request.GET.get('tanggal'), '%B %d, %Y').date()
 
-            # if username is None or kode_faskes is None or shift is None or tanggal is None:
-            #     return redirect('cr_jadwal_dokter:list_jadwal_dokter')
-
             with connection.cursor() as cursor:
                 #get nostr from dokter
                 cursor.execute(

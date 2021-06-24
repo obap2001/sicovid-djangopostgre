@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    <title> Login </title>
+    <title> Update Transaksi RS</title>
 {% endblock title %}
 
 {% load crispy_forms_tags %}
 {% block content  %}
-    <h1 class="display-4">Login</h1>
+    <h1 class="display-4">Update Transaksi RS</h1>
     <hr class="my-4">
+
     <form method = "POST">
         {% csrf_token %}
-        {{ form|crispy }}
-    <input class="btn btn-light" type="submit" value="Submit">
+        {{ form_transaksi|crispy }}
+    <input class="btn btn-light" name="num" type="submit" value="Submit">
     </form>
 {% endblock  %}
