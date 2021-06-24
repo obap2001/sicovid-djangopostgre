@@ -43,12 +43,9 @@ INSTALLED_APPS = [
     'register',
     'crispy_forms',
     'login',
-    'pendaftaran_pasien',
-    'reservasi_rumah_sakit',
-    'faskes',
-    'jadwal_faskes',
-    'rumah_sakit',
-    'transaksi_rumah_sakit'
+    'transaksi_makan',
+    'paket_makan',
+    'hotel'
 ]
 
 MIDDLEWARE = [
@@ -150,6 +147,3 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-DATE_INPUT_FORMATS = ['%d-%m-%Y']
-DATETIME_INPUT_FORMATS = ['%d-%m-%Y %H:%M:%S']

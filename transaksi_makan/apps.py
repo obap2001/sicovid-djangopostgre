@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class HotelmakanConfig(AppConfig):
+class transaksi_makanConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'hotelMakan'
+    name = 'transaksi_makan'
