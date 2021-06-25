@@ -17,7 +17,7 @@ class adminSistemRegisterForm(forms.Form):
     password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput())
     def clean(self):
         form_data = self.cleaned_data
-        if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
+        if not re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
             raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
 
 class penggunaPublikRegisterForm(forms.Form):
@@ -28,8 +28,13 @@ class penggunaPublikRegisterForm(forms.Form):
     noHP = forms.CharField(max_length=12, required=True)
     def clean(self):
         form_data = self.cleaned_data
-        # if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
-        #     raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
+<<<<<<< HEAD
+        if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
+            raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
+=======
+        if not re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
+            raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
+>>>>>>> eab78974d0bcce4f89b5a8109b83384876afc466
 
 class adminDokterRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
@@ -41,7 +46,7 @@ class adminDokterRegisterForm(forms.Form):
     gelarBelakang = forms.CharField(max_length=10, required=True)
     def clean(self):
         form_data = self.cleaned_data
-        if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
+        if not re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
             raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
 
 class adminSatgasRegisterForm(forms.Form):
@@ -50,6 +55,6 @@ class adminSatgasRegisterForm(forms.Form):
     kode_faskes = forms.ChoiceField(choices=fetch_data_faskes())
     def clean(self):
         form_data = self.cleaned_data
-        if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
+        if not re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
             raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
 
