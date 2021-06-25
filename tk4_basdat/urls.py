@@ -31,5 +31,6 @@ urlpatterns = [
     path('rumah_sakit/',include('rumah_sakit.urls')),
     path('transaksi_rs/',include('transaksi_rumah_sakit.urls')),
     path('transaksi_hotel/',include('transaksi_hotel.urls')),
+    path('transaksi_booking/',include('transaksi_booking.urls')),
     path('', home_view, name='home')
 ]
