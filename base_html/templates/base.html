@@ -141,6 +141,30 @@
 
       </ul>
     </div>
+
+    <ul class="navbar-nav ml-auto">
+    {% if request.session.username %}
+      <span class="navbar-text">
+        Welcome {{ request.session.username }} as {{ request.session.peran }}
+      </span>
+      <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                  Logout
+                </a>
+            </li>
+    {% else %}
+        <li class="nav-item">
+                <a class="nav-link" href="{% url 'register_pengguna_publik' %}">
+                  Register
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">
+                  Login
+                </a>
+            </li>
+    {% endif %}
+        </ul>
   </nav>
   <div class="container">
     {% if messages %}
