@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from base_html.views import home_view
-from login.views import login_view,logout_view
+from login.views import login_view, logout_view
 
 
 urlpatterns = [
@@ -30,5 +30,7 @@ urlpatterns = [
     path('jadwal_faskes/', include('jadwal_faskes.urls')),
     path('rumah_sakit/',include('rumah_sakit.urls')),
     path('transaksi_rs/',include('transaksi_rumah_sakit.urls')),
-    path('', home_view, name='home')
+    path('', home_view, name='home'),
+    path('transaksi_makan/', include('transaksi_makan.urls')),
+
 ]

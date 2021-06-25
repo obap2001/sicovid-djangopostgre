@@ -6,7 +6,7 @@ def fetch_data_transaksi_hotel():
     fetch_data_transaksi_hotel = []
     with connection.cursor() as cursor:
         cursor.execute('''
-            SELECT id_transaksi
+            SELECT idtransaksi
             FROM TRANSAKSI_HOTEL;
         ''')
         fetch_data_transaksi_hotel = cursor.fetchall()
@@ -18,43 +18,45 @@ def fetch_data_transaksi_hotel():
 
     return tuple(data_organized)
 
-def fetch_data_reservasi_hotel(id_transaksi_chosen):
-    fetch_data_reservasi_hotel = []
-    with connection.cursor() as cursor:
-        cursor.execute('''
-            SELECT RH.kodePasien, RH.kodeHotel, TH.id_transaksi
-            FROM RESERVASI_HOTEL RH JOIN TRANSAKSI_HOTEL TH
-            ON RH.kodepasien = TL.kodepasien;
-        ''')
-        fetch_data_reservasi_hotel = cursor.fetchall()
-    #organized the data
-    data_organized = []
-    for i in fetch_data_reservasi_hotel:
-        if i[2] == id_transaksi_chosen:
-            temp = (i[1], i[1])
-            data_organized.append(temp)
+# def fetch_data_reservasi_hotel(id_transaksi_chosen):
+#     fetch_data_reservasi_hotel = []
+#     with connection.cursor() as cursor:
+#         cursor.execute('''
+#             SELECT RH.kodePasien, RH.kodeHotel, TH.idtransaksi
+#             FROM RESERVASI_HOTEL RH JOIN TRANSAKSI_HOTEL TH
+#             ON RH.kodepasien = TH.kodepasien;
+#         ''')
+#         fetch_data_reservasi_hotel = cursor.fetchall()
+#     #organized the data
+#     data_organized = []
+#     for i in fetch_data_reservasi_hotel:
+#         if i[2] == id_transaksi_chosen:
+#             temp = (i[1], i[1])
+#             data_organized.append(temp)
 
-    return tuple(data_organized)
+#     return tuple(data_organized)
 
-def fetch_data_pesanan(kode_hotel_chosen):
-    fetch_data_pesanan = []
-    with connection.cursor() as cursor:
-        cursor.execute('''
-            SELECT kodeHotel, kodePaket
-            FROM PAKET_MAKAN
-        ''')
-        fetch_data_pesanan = cursor.fetchall()
+# def fetch_data_pesanan(kode_hotel_chosen):
+#     fetch_data_pesanan = []
+#     with connection.cursor() as cursor:
+#         cursor.execute('''
+#             SELECT kodeHotel, kodePaket
+#             FROM PAKET_MAKAN
+#         ''')
+#         fetch_data_pesanan = cursor.fetchall()
 
-    #organize the data
-    data_organized = []
-    for i in fetch_data_pesanan:
-        if i[0] == kode_hotel_chosen:
-            temp = (i[1], i[1])
-            data_organized.append(temp)
-    return tuple(data_organized)
+#     #organize the data
+#     data_organized = []
+#     for i in fetch_data_pesanan:
+#         if i[0] == kode_hotel_chosen:
+#             temp = (i[1], i[1])
+#             data_organized.append(temp)
+#     return tuple(data_organized)
 
 class createTransaksiMakanForm(forms.Form):
-    id_transaksi = forms.ChoiceField(choiches=fetch_data_transaksi_hotel(), required=True)
-    id_transaksi_hotel = forms.CharField(max_length=10, disabled=True)
-    kode_hotel = forms.CharField(fetch_data_reservasi_hotel(id_transaksi), disabled=True)
-    kode_paket = forms.ChoiceField(choices=fetch_data_pesanan(kode_hotel), required=True)
+    id_transaksi = forms.ChoiceField(choices=fetch_data_transaksi_hotel(), required=True)
+    id_transaksi_makan = forms.CharField(max_length=10, disabled=True)
+    kode_hotel = forms.CharField(max_length=5, disabled=True)
+
+class pesananForm(forms.Form):
+    kode_paket = forms.ChoiceField(required=True)
