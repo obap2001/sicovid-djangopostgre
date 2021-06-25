@@ -28,13 +28,11 @@ class penggunaPublikRegisterForm(forms.Form):
     noHP = forms.CharField(max_length=12, required=True)
     def clean(self):
         form_data = self.cleaned_data
-<<<<<<< HEAD
         if re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
             raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
-=======
+
         if not re.search("([A-Z].*[0-9])|([0-9].*[A-Z])",form_data['password']):
             raise ValidationError('Password harus minimal mengandung 1 huruf kapital dan 1 angka')
->>>>>>> eab78974d0bcce4f89b5a8109b83384876afc466
 
 class adminDokterRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
