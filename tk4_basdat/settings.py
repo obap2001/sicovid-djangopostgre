@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'faskes',
     'jadwal_faskes',
     'rumah_sakit',
-    'transaksi_rumah_sakit'
+    'transaksi_rumah_sakit',
+    'transaksi_hotel'
 ]
 
 MIDDLEWARE = [
