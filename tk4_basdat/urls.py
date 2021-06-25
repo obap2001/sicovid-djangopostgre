@@ -31,5 +31,6 @@ urlpatterns = [
     path('jadwal_faskes/', include('jadwal_faskes.urls')),
     path('rumah_sakit/',include('rumah_sakit.urls')),
     path('transaksi_rs/',include('transaksi_rumah_sakit.urls')),
-    path('cr_jadwal_dokter/', include('cr_jadwal_dokter.urls'))
+    path('cr_jadwal_dokter/', include('cr_jadwal_dokter.urls')),
+    path('memeriksa/', include('memeriksa.urls'))
 ]
