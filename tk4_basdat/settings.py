@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'register',
     'crispy_forms',
     'login',
-    'transaksi_makan'
+    'transaksi_makan',
+    'paket_makan'
 ]
 
 MIDDLEWARE = [

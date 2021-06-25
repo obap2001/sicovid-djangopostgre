@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Daftar Paket Makan </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Daftar Paket Makan</h1>
+    <hr class="my-4">
+    <table class="table">
+        <thead>
+          <tr>
+            <!-- <th scope="col">No</th> -->
+            <th scope="col">Hotel</th>
+            <th scope="col">Kode Paket</th>
+            <th scope="col">Nama Paket</th>
+            <th scope="col">Harga</th>
+            {% if request.session.peran == 'ADMIN_SISTEM' %}
+            <th scope="col">Action</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data_paket_makan %}
+          <tr>
+            <!-- <th scope="row">{{ a }}</th> -->
+            <th>{{ i.0 }}</th>
+            <td>{{ i.1 }}</td>
+            <td>{{ i.2 }}</td>
+            <td>{{ i.3 }}</td>
+            {% if request.session.peran == 'ADMIN_SISTEM' %}
+            <td > 
+                <a class="btn btn-primary" href="{% url 'update_paket_makan' kodePaket=i.1 %}" role="button">UPDATE</a>
+                <a class="btn btn-primary" href="{% url 'delete_paket_makan' kodePaket=i.1 %}" role="button">DELETE</a>
+              </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+{% endblock  %}
