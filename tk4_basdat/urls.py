@@ -32,6 +32,7 @@ urlpatterns = [
     path('transaksi_rs/',include('transaksi_rumah_sakit.urls')),
     path('', home_view, name='home'),
     path('transaksi_makan/', include('transaksi_makan.urls')),
-    path('paket_makan/', include('paket_makan.urls'))
+    path('paket_makan/', include('paket_makan.urls')),
+    path('hotel/', include('hotel.urls'))
 
 ]
