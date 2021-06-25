@@ -1,7 +1,9 @@
+from django.http import response
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.db import connection
-from .forms import createTransaksiMakanForm, pesananForm
+from .forms import UpdatePesananForm, UpdateTransaksiForm, createTransaksiMakanForm, fetch_data_transaksi_hotel, pesananForm
+from .forms import DetailTransaksiMakanForm, DetailPesananForm
 
 # Create your views here.
 def create_transaksi_makan_view(request):
@@ -29,16 +31,35 @@ def create_transaksi_makan_view(request):
 
             if id_now not in data_clean:
                 break
-
-        #get kode hotel
-        kode_hotel_all = []
+        
+        # Count ID_pesanan
+        id_allp = []
         with connection.cursor() as cursor:
-            cursor.execute(f'''
-                SELECT TH.idtransaksi, RH.kodeHotel 
-                FROM transaksi_hotel TH JOIN reservasi_hotel RH
-                ON TH.kodepasien = RH.kodepasien;
-            ''')
-            kode_hotel_all = cursor.fetchall()
+            cursor.execute('SELECT id_pesanan FROM daftar_pesan;')
+            id_allp = cursor.fetchall()
+
+        # Cleaned data
+        data_cleanp = []
+        for i in id_allp:
+            data_cleanp.append(i[0])
+
+        # Generate all possible id
+        id_nowp = 1
+        for i in data_cleanp:
+            if id_nowp != i:
+                break
+            else:
+                id_nowp += 1
+
+        # #get kode hotel
+        # kode_hotel_all = []
+        # with connection.cursor() as cursor:
+        #     cursor.execute(f'''
+        #         SELECT TH.idtransaksi, RH.kodeHotel 
+        #         FROM transaksi_hotel TH JOIN reservasi_hotel RH
+        #         ON TH.kodepasien = RH.kodepasien;
+        #     ''')
+        #     kode_hotel_all = cursor.fetchall()
 
         #cleaned data
         
@@ -76,7 +97,9 @@ def create_transaksi_makan_view(request):
                 INSERT INTO transaksi_makan values (
                     '{id_transaksi}','{id_transaksi_makan}','{list_harga[0]}'
                 );
-
+                INSERT into daftar_pesan values (
+                    '{id_transaksi_makan}', {id_nowp}, '{id_transaksi}', '{kode_hotel}', '{kode_paket}'
+                );
                 ''')
             messages.success(request, f'Transaksi Makana Berhasil ditambahkan')
             return redirect('daftar_transaksi_makan')
@@ -84,4 +107,143 @@ def create_transaksi_makan_view(request):
         return render(request, 'create_transmakan.html', response)
 
     else:
+        return redirect('home')
+
+def list_transaksi_makan_view(request):
+    if ('username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK') or ('username' in request.session and request.session['peran'] == 'ADMIN_SATGAS') :
+        response = {}
+        data_transMakan = []
+
+        #fetch data transaksi makan
+        with connection.cursor() as cursor:
+            cursor.execute(f'''
+                  SELECT idtransaksi, idtransaksimakan, totalbayar
+                  FROM transaksi_makan;
+            ''')
+            data_transMakan = cursor.fetchall()
+            response['data_transmakan'] = data_transMakan
+        return render(request, 'list_transmakan.html', response)
+    else:
+        return redirect('home')
+
+
+def detail_transaksi_makan_view(request,idtransaksimakan):
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS' :
+        response = {}
+        data_transmakan = fetch_data_transaksi_makan(idtransaksimakan)
+
+        #check Data_transmakan
+        if not data_transmakan:
+            messages.error(request, 'Data Transaksi Makan Tidak Ditemukan')
+            return redirect('home')
+
+        #Instantiate Form
+        form_transaksi = DetailTransaksiMakanForm(request.POST or None, initial=data_transmakan[0])
+        form_pesanan = DetailPesananForm(request.POST or None, initial=data_transmakan[1])
+
+        #Passing form to response
+        response['form_transaksi'] = form_transaksi
+        response['form_pesanan'] = form_pesanan
+
+        return render(request, 'detail_transmakan.html', response)
+
+    else:
+        return redirect('home')
+
+def update_transaksi_makan_view(request, idtransaksimakan):
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
+        response = {}
+        data_transmakan = fetch_data_transaksi_makan(idtransaksimakan)
+
+        #fetch data transaksi makan
+        if not data_transmakan:
+            messages.error(request, 'Data Transaksi Makan Tidak Ditemukan')
+            return redirect('home')
+
+        #intantiate Form
+        form_transmakan = UpdateTransaksiForm(request.POST or None, initial=data_transmakan[0])
+        form_pesanan = UpdatePesananForm(request.POST or None, initial=data_transmakan[1])
+
+        #Passing Form to Response
+        response['form_transaksi'] = form_transmakan
+        response['form_pesanan'] = form_pesanan
+
+        #Form Validation
+        if request.method == 'POST' and form_transmakan.is_valid() and form_pesanan.is_valid():
+            idtransaksi = form_transmakan.cleaned_data['idtransaksi']
+            idtransaksimakan = form_transmakan.cleaned_data['idtransaksimakan']
+
+
+def fetch_data_transaksi_makan(kode):
+    data_transmakan = []
+    with connection.cursor() as cursor:
+        cursor.execute(f'''
+           SELECT * FROM transaksi_makan
+           WHERE idtransaksimakan = '{kode}';
+        ''')
+        data_transmakan = cursor.fetchone()
+
+    if not data_transmakan:
+        return False
+
+    init_transaksi_data ={
+        'idtransaksi' : data_transmakan[0],
+        'idtransaksimakan' : data_transmakan[1],
+        'totalbayar' : data_transmakan[2]
+    }
+
+    data_pesanan = []
+    with connection.cursor() as cursor:
+        cursor.execute(f'''
+             SELECT DP.idpesanan, DP.kodepaket, PM.harga 
+             from daftar_pesan DP JOIN paket_makan PM ON DP.kodepaket=PM.kodepaket
+             where idtransaksimakan = {kode};
+        ''')
+        data_pesanan = cursor.fetchone()
+
+    if not data_pesanan:
+        return False
+
+    init_pesanan_data = {
+        'idpesanan' : data_pesanan[0],
+        'kode paket' : data_pesanan[1],
+        'harga' : data_pesanan[2]
+    }
+
+    return (init_transaksi_data, init_pesanan_data)
+
+def fetch_data_transmakan(request):
+    tm = request.GET.get('idTransaksi')
+    list_hotel = []
+
+    with connection.cursor() as cursor:
+        cursor.execute(f'''
+             SELECT RH.kodeHotel
+             FROM transaksi_hotel TH JOIN reservasi_hotel RH ON TH.kodepasien=RH.kodepasien
+             WHERE TH.idtransaksi = '{tm}';
+        ''')
+        list_hotel = cursor.fetchone()
+
+    #Organized the data
+    cleaned_data = []
+    for i in list_hotel:
+        temp=(i[0],f'{i[0]}')
+        cleaned_data.append(temp)
+    return render(request, 'kode_hotel_chosen.html', {list_hotel : cleaned_data})
+
+def delete_transaksi_makan_view(request, idtransaksimakan):
+    if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS':
+        #Deleting data in SQL
+        with connection.cursor() as cursor:
+            cursor.execute(f'''
+                  DELETE from transaksi_makan 
+                  WHERE idtransaksimakan='{idtransaksimakan}' and idtransaksi in (
+                      SELECT idtransaksi FROM transaksi_hotel
+                      WHERE statusbayar = 'Belum Bayar');
+            ''')
+        # messages.success(request, f'Data Transaksi Makan Berhasil Dihapus')
+        return redirect('list_transaksi_makan')
+
+    else:
+        # messages.error(request, 'Penghapusan Data Tidak Dapat Dilakukan')
         return redirect('home')
