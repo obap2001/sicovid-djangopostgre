@@ -39,10 +39,18 @@ def list_reservasi_rs_view(request):
 
         # Fetch Data
         with connection.cursor() as cursor:
-            cursor.execute(f'''
-            SELECT * FROM RESERVASI_RS;
-            ''')
-            data_reservasi = cursor.fetchall()
+            if request.session['peran'] == 'PENGGUNA_PUBLIK':
+                cursor.execute(f'''
+                SELECT RRS.KodePasien, RRS.tglmasuk, RRS.tglkeluar, RRS.koders, RRS.koderuangan, RRS.kodebed FROM RESERVASI_RS RRS, PASIEN P
+                WHERE RRS.kodepasien = P.NIK and p.idpendaftar = '{request.session['username']}';
+                ''')
+                data_reservasi = cursor.fetchall()
+
+            else:
+                cursor.execute(f'''
+                SELECT * FROM RESERVASI_RS;
+                ''')
+                data_reservasi = cursor.fetchall()
 
         # Reorganized Data
         id_now = 1
