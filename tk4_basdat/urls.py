@@ -19,7 +19,6 @@ from django.urls.conf import include
 from base_html.views import home_view
 from login.views import login_view,logout_view
 
-
 urlpatterns = [
     path('register/', include('register.urls')),
     path('login/', login_view, name='login'),
@@ -30,5 +29,6 @@ urlpatterns = [
     path('jadwal_faskes/', include('jadwal_faskes.urls')),
     path('rumah_sakit/',include('rumah_sakit.urls')),
     path('transaksi_rs/',include('transaksi_rumah_sakit.urls')),
+    path('ruangan_hotel/',include('ruangan_hotel.urls')),
     path('', home_view, name='home')
 ]
