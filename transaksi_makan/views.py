@@ -23,11 +23,13 @@ def create_transaksi_makan_view(request):
 
         # Generate all possible id
         id_now = ''
-        for i in range(1,100):
+        for i in range(1,1000):
             if i < 10 :
                 id_now = 'TRM00' + str(i)
-            else:
+            elif i <100 :
                 id_now = 'TRM0' + str(i)
+            else:
+                id_now = 'TRM' + str(i)
 
             if id_now not in data_clean:
                 break
@@ -138,8 +140,8 @@ def detail_transaksi_makan_view(request,idtransaksimakan):
             return redirect('home')
 
         #Instantiate Form
-        form_transaksi = DetailTransaksiMakanForm(request.POST or None, initial=data_transmakan[0])
-        form_pesanan = DetailPesananForm(request.POST or None, initial=data_transmakan[1])
+        form_transaksi = DetailTransaksiMakanForm(request.POST, initial=data_transmakan[1])
+        form_pesanan = DetailPesananForm(request.POST, initial=data_transmakan[1])
 
         #Passing form to response
         response['form_transaksi'] = form_transaksi
@@ -178,39 +180,50 @@ def fetch_data_transaksi_makan(kode):
     data_transmakan = []
     with connection.cursor() as cursor:
         cursor.execute(f'''
-           SELECT * FROM transaksi_makan
-           WHERE idtransaksimakan = '{kode}';
+           SELECT idtransaksi, idtransaksimakan FROM transaksi_makan
+           WHERE idtransaksimakan='{kode}';
         ''')
         data_transmakan = cursor.fetchone()
 
     if not data_transmakan:
         return False
 
-    init_transaksi_data ={
-        'idtransaksi' : data_transmakan[0],
-        'idtransaksimakan' : data_transmakan[1],
-        'totalbayar' : data_transmakan[2]
-    }
+    kode_hotel = []
+    with connection.cursor() as cursor:
+        cursor.execute(f'''
+             SELECT kodehotel from daftar_pesan
+             WHERE id_transaksi='{data_transmakan[0]}' and idtransaksimakan = '{data_transmakan[1]}';
+        ''')
+        kode_hotel = cursor.fetchone()
+
+    if not kode_hotel:
+        return False
 
     data_pesanan = []
     with connection.cursor() as cursor:
         cursor.execute(f'''
-             SELECT DP.idpesanan, DP.kodepaket, PM.harga 
+             SELECT DP.id_pesanan, DP.kodepaket, PM.harga 
              from daftar_pesan DP JOIN paket_makan PM ON DP.kodepaket=PM.kodepaket
-             where idtransaksimakan = {kode};
+             WHERE dp.idtransaksimakan = '{kode}';
         ''')
         data_pesanan = cursor.fetchone()
 
     if not data_pesanan:
         return False
 
+    init_transaksi_data ={
+        'idtransaksi' : data_transmakan[0],
+        'idtransaksimakan' : data_transmakan[1],
+        'kodehotel' : kode_hotel[0]
+    }
+
     init_pesanan_data = {
         'idpesanan' : data_pesanan[0],
-        'kode paket' : data_pesanan[1],
+        'kodepaket' : data_pesanan[1],
         'harga' : data_pesanan[2]
     }
 
-    return (init_transaksi_data, init_pesanan_data)
+    return [init_transaksi_data,init_pesanan_data]
 
 def fetch_data_transmakan(request):
     tm = request.GET.get('idTransaksi')

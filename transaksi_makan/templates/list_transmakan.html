@@ -26,9 +26,9 @@
             <td>{{ i.1 }}</td>
             <td>{{ i.2 }}</td>
             <td>
-              <a class="btn btn-primary" href="{% url 'delete_transmakan' idtransaksimakan=i.1 %}" role="button">UPDATE</a>
+              <a class="btn btn-primary" href="#" role="button">UPDATE</a>
               <a class="btn btn-primary" href="{% url 'delete_transmakan' idtransaksimakan=i.1 %}" role="button">DELETE</a>
-              <a class="btn btn-primary" href="{% url 'delete_transmakan' idtransaksimakan=i.1 %}" role="button">DETAIL</a>
+              <a class="btn btn-primary" href="{% url 'detail_transaksi_makan' idtransaksimakan=i.1 %}" role="button">DETAIL</a>
             </td>
           </tr>
           {% endfor %}
