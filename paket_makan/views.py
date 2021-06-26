@@ -1,3 +1,4 @@
+from typing import Collection
 from django.shortcuts import render, redirect
 from django.http import response
 from django.contrib import messages
@@ -34,15 +35,33 @@ def create_paket_makan_view(request):
 def list_paket_makan_view(request):
     if 'username' in request.session and (request.session['peran'] == 'ADMIN_SISTEM' or request.session['peran'] == 'ADMIN_SATGAS' or request.session['peran'] == 'PENGGUNA_PUBLIK'):
         response = {} 
-        data_paket_makan = []
+        undeletable_data_paket_makan = []
+        deletable_paket_makan = []
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
                  SELECT * FROM paket_makan
+                  WHERE kodepaket IN (
+                     SELECT kodepaket from daftar_pesan)
                  ORDER BY kodeHotel ASC;
             ''')
-            data_paket_makan = cursor.fetchall()
-            response['data_paket_makan'] = data_paket_makan
+            undeletable_paket_makan = cursor.fetchall()
+            cursor.execute(f'''
+                 SELECT * FROM paket_makan
+                 WHERE kodepaket NOT IN (
+                     SELECT kodepaket from daftar_pesan)
+                ORDER BY kodeHotel ASC;
+            ''')
+            deletable_paket_makan = cursor.fetchall()
+        data_cleaned = []
+        for i in undeletable_paket_makan:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', False)
+            data_cleaned.append(temp)
+        for i in deletable_paket_makan:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', True)
+            data_cleaned.append(temp)
+        data_cleaned.sort()
+        response['data_paket_makan'] = data_cleaned
 
         return render(request, 'list_paket_makan.html', response)
 

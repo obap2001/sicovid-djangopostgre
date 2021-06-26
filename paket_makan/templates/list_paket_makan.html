@@ -32,7 +32,9 @@
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <td > 
                 <a class="btn btn-primary" href="{% url 'update_paket_makan' kodePaket=i.1 %}" role="button">UPDATE</a>
+               <a href=""> {% if i.4 == True %} 
                 <a class="btn btn-primary" href="{% url 'delete_paket_makan' kodePaket=i.1 %}" role="button">DELETE</a>
+                {% endif %}</a>
               </td>
             {% endif %}
           </tr>
