@@ -56,7 +56,7 @@ def create_daftar_pasien_view(request):
                         '''
                     )
             messages.success(request, f'Pasien {nama} Berhasil Ditambahkan')
-            return redirect('daftar_pasien')
+            return redirect('list_pasien')
 
         return render(request,'create_pasien.html',response)
     else:
@@ -70,7 +70,7 @@ def list_daftar_pasien_view(request):
         # Fetch Pasien Data
         with connection.cursor() as cursor:
             cursor.execute(
-                f'SELECT NIK, Nama FROM PASIEN WHERE idpendaftar={user_now} ;'
+                f'''SELECT NIK, Nama FROM PASIEN WHERE idpendaftar='{user_now}';'''
             )
             data_pasien = cursor.fetchall()
             response['data_pasien'] = data_pasien
@@ -91,7 +91,7 @@ def list_daftar_pasien_view(request):
 def detail_daftar_pasien_view(request,nik):
     if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
-        data_pasien = fetch_data_pasien(nik)
+        data_pasien = fetch_data_pasien(request,nik)
 
         # Check Data Pasien
         if not data_pasien:
@@ -116,7 +116,7 @@ def detail_daftar_pasien_view(request,nik):
 def update_daftar_pasien_view(request,nik):
     if 'username' in request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
-        data_pasien = fetch_data_pasien(nik)
+        data_pasien = fetch_data_pasien(request,nik)
 
         # Fetch Data Pasien
         if not data_pasien:
@@ -183,19 +183,19 @@ def delete_daftar_pasien_view(request,nik):
             cursor.execute(
                 f'''
                 DELETE FROM PASIEN
-                WHERE NIK = '{nik}';
+                WHERE NIK = '{nik}' and idpendaftar= '{request.session['username']}';
                 '''
             )
         messages.success(request, f'Data Pasien dengan NIK {nik} berhasil dihapus')
-        return redirect('daftar_pasien')
+        return redirect('list_pasien')
     else:
         return redirect('home')
 
-def fetch_data_pasien(nik):
+def fetch_data_pasien(request, nik):
     data_pasien = []
     with connection.cursor() as cursor:
         cursor.execute(
-            f'''SELECT * FROM PASIEN where nik='{nik}';'''
+            f'''SELECT * FROM PASIEN where nik='{nik}' and idpendaftar = '{request.session['username']}';'''
         )
         data_pasien = cursor.fetchone()
 
