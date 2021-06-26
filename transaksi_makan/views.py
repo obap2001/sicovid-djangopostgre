@@ -128,6 +128,7 @@ def list_transaksi_makan_view(request):
                       WHERE statusbayar = 'Lunas'
                   );
             ''')
+
             undeletable_data_transMakan = cursor.fetchall()
 
         data_gabung = []
@@ -144,6 +145,12 @@ def list_transaksi_makan_view(request):
         angka = 1
         for i in data_gabung:
             temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', angka)
+            data_transMakan = cursor.fetchall()
+        
+        cleaned_data = []
+        angka = 1
+        for i in data_transMakan:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', angka)
             cleaned_data.append(temp)
             angka+=1
 

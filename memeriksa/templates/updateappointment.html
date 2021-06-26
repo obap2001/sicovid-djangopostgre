@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title> Update Appointment </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+
+<h1>Update Appointment</h1>
+<form action="{% url 'memeriksa:update_appointment' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <div>
+            <h4>{{ form.nik_pasien.label }}</h4>
+            <div class="input-group mb-3 ">{{ form.nik_pasien }}</div>
+
+            <h4>{{ form.email_dokter.label }}</h4>
+            <div class="input-group mb-3">{{ form.email_dokter }}</div>
+
+            <h4>{{ form.shift.label }}</h4>
+            <div class="input-group mb-3">{{ form.shift }}</div>
+
+            <h4>{{ form.tanggal.label }}</h4>
+            <div class="input-group mb-3">{{ form.tanggal }}</div>
+
+            <h4>{{ form.kode_faskes.label }}</h4>
+            <div class="input-group mb-3">{{ form.kode_faskes }}</div>
+
+            <h4>{{ form.rekomendasi.label }}</h4>
+            <div class="input-group mb-3">{{ form.rekomendasi }}</div>
+        </div>
+        <input class="btn btn-outline-primary" type="submit" value="Simpan">
+</form>
+</div>
+
+{% endblock %}
