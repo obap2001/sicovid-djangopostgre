@@ -129,7 +129,7 @@ def update_ruangan_hotel_view(request,kode_hotel,kode_ruangan):
             return redirect('list_ruangan_hotel')
 
         return render(request,'update_ruangan_hotel.html',response)
-
+        return redirect('list_ruangan_hotel')
     else:
         return redirect('home')
 
