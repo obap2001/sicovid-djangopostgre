@@ -7,11 +7,7 @@ from .forms import CreateReservasiForm, UpdateReservasiForm
 def create_reservasi_hotel_view(request):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS' or request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
-
-        peran = request.session['peran']
-        username = request.session['username']
-
-        form_reservasi = CreateReservasiForm(request.POST or None,peran=peran,username=username)
+        form_reservasi = CreateReservasiForm(request.POST or None,peran=request.session['peran'],username=request.session['username'])
         response['form_reservasi'] = form_reservasi
 
         if request.method == 'POST' and form_reservasi.is_valid():
@@ -30,7 +26,7 @@ def create_reservasi_hotel_view(request):
             messages.success(request, 'Data Reservasi Behasil ditambahkan')
             return redirect('list_reservasi_hotel')
 
-        return render(request,'create_reservasi_hotel.html',response)
+        return render(request,'create_reservasi_hotel.html',response,)
     else:
         return redirect('home')
 
@@ -82,8 +78,9 @@ def update_reservasi_hotel_view(request,kode_pasien,tanggal):
             'kode_hotel': data_reservasi[3],
             'kode_ruangan': data_reservasi[4],
         }
-
         form_reservasi = UpdateReservasiForm(request.POST or None, initial=init_reservasi)
+
+        # form_reservasi = UpdateReservasiForm(request.POST or None, initial=init_reservasi,kode_pasien=kode_pasien,tanggal=tanggal)
         response['form_reservasi'] = form_reservasi
 
         if request.method == 'POST' and form_reservasi.is_valid():
@@ -113,7 +110,7 @@ def delete_reservasi_hotel_view(request,kode_pasien,tanggal):
             cursor.execute(
                 f'''
                 DELETE FROM RESERVASI_HOTEL
-                WHERE kodepasien = '{kode_pasien}' and
+                WHERE kodepasien = '{kode_pasien}' AND
                 tglmasuk='{tanggal_splitted[2]}-{tanggal_splitted[1]}-{tanggal_splitted[0]}';
                 '''
             )
@@ -124,7 +121,7 @@ def delete_reservasi_hotel_view(request,kode_pasien,tanggal):
                 '''
             )
         messages.success(request, f'Data Reservasi berhasil dihapus')
-        return redirect('list_reservasi_rs')
+        return redirect('list_reservasi_hotel')
 
     else:
         return redirect('home')
