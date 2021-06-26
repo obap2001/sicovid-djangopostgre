@@ -8,7 +8,10 @@ def create_reservasi_hotel_view(request):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS' or request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
 
-        form_reservasi = CreateReservasiForm(request.POST or None)
+        peran = request.session['peran']
+        username = request.session['username']
+
+        form_reservasi = CreateReservasiForm(request.POST or None,peran=peran,username=username)
         response['form_reservasi'] = form_reservasi
 
         if request.method == 'POST' and form_reservasi.is_valid():
