@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create Hotel </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Create Hotel</h1>
+    <hr class="my-4">
+
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form_hotel|crispy }}
+        <p>Alamat:</p>
+        {% csrf_token %}
+        {{ form_alamat|crispy }}
+    <input class="btn btn-light" name="num" type="submit" value="Submit">
+    </form>
+    <br> <br>
+{% endblock  %}
+

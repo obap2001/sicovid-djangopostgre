@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Daftar Transaksi Makan </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Daftar Transaksi Makan</h1>
+    <hr class="my-4">
+    <a class="btn btn-primary" href="{% url 'create_transaksi_makan' %}" role="button">Buat Transaksi Makan dan Daftar Pesan</a>
+    <p> </p>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Id Transaksi Hotel</th>
+            <th scope="col">Id Transaksi</th>
+            <th scope="col">Total Bayar</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data_transmakan %}
+          <tr>
+<<<<<<< HEAD
+            <th scope="row">{{ i.4 }}</th>
+            <th scope="row">{{ i.0 }}</th>
+=======
+            <th scope="row">{{ i.3 }}</th>
+            <th>{{ i.0 }}</th>
+>>>>>>> c00af119c73d31c3d67227dc39b2ea921758054e
+            <td>{{ i.1 }}</td>
+            <td>{{ i.2 }}</td>
+            <td>
+              {% if request.session.peran == "ADMIN_SATGAS" %}
+              <a class="btn btn-primary" href="#" role="button">UPDATE</a>
+              {% if i.3 == True %}
+              <a class="btn btn-primary" href="{% url 'delete_transmakan' idtransaksimakan=i.1 %}" role="button">DELETE</a>
+              {% endif %}
+              {% endif %}
+              {% if request.session.peran == "PENGGUNA_PUBLIK" or request.session.peran == "ADMIN_SATGAS" %}
+              <a class="btn btn-primary" href="{% url 'detail_transaksi_makan' idtransaksi=i.0 idtransaksimakan=i.1 %}" role="button">DETAIL</a>
+              {% endif %}
+              
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+{% endblock  %}
