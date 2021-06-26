@@ -55,6 +55,7 @@ def list_paket_makan_view(request):
             undeletable_paket_makan = cursor.fetchall()
 
         data_cleaned = []
+        
         for i in deletable_paket_makan:
             temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', True)
             data_cleaned.append(temp)
@@ -63,7 +64,15 @@ def list_paket_makan_view(request):
             data_cleaned.append(temp)
 
         data_cleaned.sort()
-        response['data_paket_makan'] = data_cleaned
+        
+        data_final = []
+        angka = 1
+        for i in data_cleaned:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', f'{i[4]}', angka)
+            data_final.append(temp)
+            angka+=1
+
+        response['data_paket_makan'] = data_final
 
         return render(request, 'list_paket_makan.html', response)
 

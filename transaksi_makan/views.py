@@ -123,7 +123,15 @@ def list_transaksi_makan_view(request):
                   FROM transaksi_makan;
             ''')
             data_transMakan = cursor.fetchall()
-            response['data_transmakan'] = data_transMakan
+        
+        cleaned_data = []
+        angka = 1
+        for i in data_transMakan:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', angka)
+            cleaned_data.append(temp)
+            angka+=1
+
+        response['data_transmakan'] = cleaned_data
         return render(request, 'list_transmakan.html', response)
     else:
         return redirect('home')
