@@ -35,12 +35,29 @@ def list_reservasi_hotel_view(request):
         response = {}
         data_reservasi = []
 
+        peran = request.session['peran']
+        username = request.session['username']
+
         # Fetch Data
         with connection.cursor() as cursor:
             cursor.execute(f'''
             SELECT * FROM RESERVASI_HOTEL;
             ''')
             data_reservasi = cursor.fetchall()
+        
+        with connection.cursor() as cursor:
+            if request.session['peran'] == 'PENGGUNA_PUBLIK':
+                cursor.execute(f'''
+                    SELECT * FROM RESERVASI_HOTEL
+                    WHERE kodepasien IN
+                    (SELECT p.nik from pasien p where p.idpendaftar = '{username}');
+                ''')
+                data_reservasi = cursor.fetchall()
+            else:
+                cursor.execute(f'''
+                SELECT * FROM RESERVASI_HOTEL;
+                ''')
+                data_reservasi = cursor.fetchall()
 
         # Reorganized Data
         id_now = 1
