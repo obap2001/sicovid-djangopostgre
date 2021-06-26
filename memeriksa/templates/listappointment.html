@@ -45,7 +45,7 @@
                     <input type="hidden" id="kode_faskes" name="kode_faskes" value="{{ i.3 }}">
                     <input type="hidden" id="shift" name="shift" value="{{ i.4 }}">
                     <input type="hidden" id="tanggal" name="tanggal" value="{{ i.5 }}">
-                    <input type="submit" class="btn btn-success" value="Delete">
+                    <input type="submit" class="btn btn-danger" value="Delete">
                 </form>
             </td>
             {% endif %}
@@ -70,7 +70,7 @@
 
 {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
 <form action="{% url 'memeriksa:create_appointment' %}" method="get">
-    <input type="submit" class="btn btn-outline-primary" value="Buat Appointment">
+    <input type="submit" class="btn btn-primary btn-lg btn-block" value="Buat Appointment">
 </form>
 {% endif %}
 {% endblock %}

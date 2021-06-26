@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.db import connection
 from django.contrib import messages
 from .forms import UpdateTransaksiForm
+import datetime
 
 # Create your views here.
 
@@ -49,25 +50,40 @@ def update_transaksi_rs_view(request,id):
         init_transaksi= {
             'id_transaksi': data_transaksi[0],
             'kode_pasien': data_transaksi[1],
-            'tanggal_pembayaran': data_transaksi[2].strftime('%d-%m-%Y'),
-            'waktu_pembayaran': data_transaksi[3].strftime('%d-%m-%Y %H:%M:%S'),
             'tanggal_masuk': data_transaksi[4].strftime('%d-%m-%Y'),
             'total_biaya': data_transaksi[5],
             'status_bayar': data_transaksi[6]
         }
+
+        if isinstance(data_transaksi[2], datetime.date):
+            init_transaksi['tanggal_pembayaran'] =  data_transaksi[2].strftime('%d-%m-%Y')
+        else:
+            init_transaksi['tanggal_pembayaran'] = None
+
+        if isinstance(data_transaksi[3], datetime.datetime):
+            init_transaksi['waktu_pembayaran'] =  data_transaksi[3].strftime('%d-%m-%Y %H:%M:%S')
+        else:
+            init_transaksi['waktu_pembayaran'] = None
 
         form_transaksi= UpdateTransaksiForm(request.POST or None, initial=init_transaksi)
         response['form_transaksi'] = form_transaksi
 
         if request.method == 'POST' and form_transaksi.is_valid():
             status_bayar = form_transaksi.cleaned_data['status_bayar']
-
-            with connection.cursor() as cursor:
-                    cursor.execute(f'''
-                        UPDATE transaksi_RS
-                        SET statusbayar = '{status_bayar}'
-                        WHERE idtransaksi = '{id}' ;
-                    ''')
+            if status_bayar == 'Lunas':
+                with connection.cursor() as cursor:
+                        cursor.execute(f'''
+                            UPDATE transaksi_RS
+                            SET statusbayar = '{status_bayar}', tanggalpembayaran = '{datetime.date.today().strftime('%Y-%m-%d')}', waktupembayaran = '{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'
+                            WHERE idtransaksi = '{id}' ;
+                        ''')
+            else:
+                 with connection.cursor() as cursor:
+                        cursor.execute(f'''
+                            UPDATE transaksi_RS
+                            SET statusbayar = '{status_bayar}'
+                            WHERE idtransaksi = '{id}';
+                        ''')
 
             messages.success(request, 'Data transaksi behasil diubah')
             return redirect('list_transaksi_rs')

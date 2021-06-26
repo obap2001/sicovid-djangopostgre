@@ -35,11 +35,10 @@
       <td>{{ i.3 }}</td>
       <td>{{ i.4 }}</td>
       <td>{{ i.5 }}</td>
-      <td>{{ i.6 }}</td>
       {% if request.session.peran == "ADMIN_SATGAS" %}
       <td>
-        <a class="btn btn-primary" href="{% url 'update_reservasi_rs' kode_pasien=i.1 tanggal=i.2 %}" role="button">UPDATE</a>
-        <a class="btn btn-primary" href="{% url 'delete_reservasi_rs' kode_pasien=i.1 tanggal=i.2 %}" role="button">DELETE</a>
+        <a class="btn btn-primary" href="{% url 'update_reservasi_hotel' kode_pasien=i.1 tanggal=i.2 %}" role="button">UPDATE</a>
+        <a class="btn btn-primary" href="{% url 'delete_reservasi_hotel' kode_pasien=i.1 tanggal=i.2 %}" role="button">DELETE</a>
         </td>
         {% endif %}
     </tr>

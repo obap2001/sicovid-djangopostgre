@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title> Create Ruangan Rumah Sakit </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+
+<h1>Create Ruangan Rumah Sakit</h1>
+
+<form action="{% url 'ruangan_bed_rs:create_ruanganrs' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <div>
+            <br>
+            <label for ="kode_rs">Kode Rumah Sakit</label>
+            <select class="form-control mb-3"  name="kode_rs" id="kode_rs">
+                <option selected disabled>Pilih Rumah Sakit</option>
+                {% for eachkode in kode_rs %}
+                <option value={{eachkode.0}}>{{eachkode.0}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <br>
+            <label style="font-size: 20px;" for="kode_ruangan">Kode Ruangan</label>
+            <input class="form-control" name="kode_ruangan" id="kode_ruangan" readonly></input>
+            <br>
+            <h5>{{ form.tipe.label }}</h5><div class="input-group mb-3">{{ form.tipe }}</div>
+            <h5>{{ form.harga_ruangan.label }}</h5><div class="input-group mb-3">{{ form.harga_ruangan }}</div>
+        </div>
+        <input class="btn btn-success" type="submit" value="Simpan">
+</form>
+
+{% endblock content %}
+
+{% block extra_script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('#kode_rs').on('change', function(){
+        var tothrow = $('#kode_rs').val();
+        directory = '/ruangan_bed_rs/ajax_ruanganrs/' + tothrow; 
+        console.log()
+        $.ajax({
+            url:directory,
+            success:function(data){
+                var kode_ruangan_auto = parseInt(data.id);
+                $('#kode_ruangan').val(kode_ruangan_auto);
+            }
+        })
+    })
+</script>
+{% endblock extra_script %}

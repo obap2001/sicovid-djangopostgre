@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Detail Transaksi Makan </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Detail Transaksi Makan</h1>
+    <hr class="my-4">
+
+    <p><b>Id Transaksi:</b> {{ data_all.0 }}</p>
+    <p><b> Id Transaksi Makan:</b> {{ data_all.1 }}</p>
+    <p><b> Kode Hotel:</b> {{ data_all.2 }}</p>
+    <br>
+    <p><b>Daftar Pesanan:</b></p>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id Pesanan</th>
+            <th scope="col">Paket Makan</th>
+            <th scope="col">Harga</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data_pesanan %}
+          <tr>
+            <th scope="row">{{ i.0 }}</th>
+            <td>{{ i.1 }}</td>
+            <td>{{ i.2 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <p><b>Total:</b> Rp{{ data_all.3 }}</p>
+    <br><br>
+{% endblock  %}
