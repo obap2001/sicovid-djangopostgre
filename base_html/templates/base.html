@@ -89,7 +89,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'ADMIN_SATGAS' %}
             <a class="dropdown-item" href="{% url 'create_rs' %}">Buat RS</a>
-            <a class="dropdown-item" href="{% url 'list_rs' %}">List Pasien</a>
+            <a class="dropdown-item" href="{% url 'list_rs' %}">List RS</a>
             {% endif %}
             {% if request.session.peran == 'DOKTER' %}
             <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter_sendiri' %}">Buat Jadwal
