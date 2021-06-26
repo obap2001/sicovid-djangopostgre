@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title> Buat Appointment </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+
+<center>
+    <h1>Buat Appointment</h1>
+</center>
+
+<form id="formCreate" action="{% url 'memeriksa:form_appointment' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <div>
+            <h4>{{ form.nik_pasien.label }}</h4>
+            <div class="input-group mb-3 ">{{ form.nik_pasien }}</div>
+            <h4>{{ form.email_dokter.label }}</h4>
+            <div class="input-group mb-3">{{ form.email_dokter }}</div>
+            <h4>{{ form.kode_faskes.label }}</h4>
+            <div class="input-group mb-3">{{ form.kode_faskes }}</div>
+            <h4>{{ form.tanggal.label }}</h4>
+            <div class="input-group mb-3">{{ form.tanggal }}</div>
+            <h4>{{ form.shift.label }}</h4>
+            <div class="input-group mb-3">{{ form.shift }}</div>
+        </div>
+        <input class="btn btn-outline-primary" type="submit" value="Simpan">
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Update Reservasi Hotel </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Update Reservasi Hotel</h1>
+    <hr class="my-4">
+
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form_reservasi|crispy }}
+    <input class="btn btn-light" name="num" type="submit" value="Submit">
+    </form>
+{% endblock  %}
