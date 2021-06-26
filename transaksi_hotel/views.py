@@ -21,10 +21,13 @@ def list_transaksi_hotel_view(request):
         data_organized = []
         for i in data_transaksi:
             temp = []
-            if i[2] == None:
-                temp = (i[0],i[1], '-', '-',int_to_currency(i[4]),i[5])
+            if i[2] == None and i[3] == None:
+                temp = (i[0],i[1],'-', '-',int_to_currency(i[4]),i[5])
+            elif i[3] == None:
+                temp = (i[0],i[1],i[2].strftime('%d-%m-%Y'),'-',int_to_currency(i[4]),i[5])
             else:
                 temp = (i[0],i[1],i[2].strftime('%d-%m-%Y'),i[3].strftime('%H:%M:%S'),int_to_currency(i[4]),i[5])
+
             data_organized.append(temp)
 
         response['data_transaksi'] = data_organized
@@ -65,10 +68,10 @@ def update_transaksi_hotel_view(request,id):
             data_transaksi= cursor.fetchone()
 
         init_transaksi= {
-            'nik_pasien': data_transaksi[0],
-            'id_transaksi': data_transaksi[1],
+            'nik_pasien': data_transaksi[1],
+            'id_transaksi': data_transaksi[0],
             'tanggal_pembayaran': data_transaksi[2].strftime('%d-%m-%Y'),
-            'waktu_pembayaran': data_transaksi[3].strftime('%d-%m-%Y %H:%M:%S'),
+            'waktu_pembayaran': '-',
             'total_biaya': data_transaksi[4],
             'status_bayar': data_transaksi[5]
         }
