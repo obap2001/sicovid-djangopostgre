@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create Transaksi Makan </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Create Transaksi Makan</h1>
+    <hr class="my-4">
+
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form_transmakan|crispy }}
+        <h3>Pesanan:</h3>
+        {% csrf_token %}
+        {{ form_pesanan|crispy }}
+        <input class="btn btn-light" name="num" type="add" value="Tambah Pesanan"><br>
+    <input class="btn btn-light" name="num" type="submit" value="Submit">
+    </form>
+{% endblock  %}
+
+{% block extra_script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+    $("#id_transaksi").change(function () {
+      var url = "{% url 'kode_hotel_terpilih' %}";
+      var idtransaksi = $(this).val();
+      console.log(idtransaksi);
+
+      $.ajax({
+        url: url,
+        data: {
+          'idtransaksi': idtransaksi
+        },
+        success: function (data) {
+            console.log(data);
+          $("#id_kode_hotel").html(data);
+      }
+      });
+
+    });
+    </script>
+     <!-- <script>
+    $("#id_kode_ruangan").change(function () {
+      var url = "{% url 'load_bed' %}";
+      var koderuang = $(this).val();
+      var koders = $("#id_kode_rumah_sakit").val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'rumah_sakit': koders,
+          'kode_ruangan' : koderuang
+        },
+        success: function (data) {
+            console.log(data);
+          $("#id_kode_bed").html(data);
+      }
+      });
+
+    });
+    </script> -->
+
+{% endblock extra_script %}

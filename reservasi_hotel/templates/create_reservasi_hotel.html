@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create Reservasi Hotel </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Create Reservasi Hotel</h1>
+    <hr class="my-4">
+
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form_reservasi|crispy }}
+    <input class="btn btn-light" name="num" type="submit" value="Submit">
+    </form>
+{% endblock  %}
+
+{% block extra_script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+    $("#id_kode_ruangan").change(function () {
+      var url = "{% url 'load_ruangan' %}";
+      var kode_ruangan = $(this).val();
+      console.log(koders);
+
+      $.ajax({
+        url: url,
+        data: {
+          'hotel': kode_ruangan
+        },
+        success: function (data) {
+            console.log(data);
+          $("#id_kode_ruangan").html(data);
+      }
+      });
+
+    });
+    </script>
+
+{% endblock extra_script %}

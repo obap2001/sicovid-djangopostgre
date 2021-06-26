@@ -8,12 +8,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <!-- styling scripts -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="stylesheet" type="text/css"
-    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   {% block style %}
   {% endblock style %}
 </head>
@@ -23,8 +21,7 @@
   <nav class="navbar navbar-expand-lg navbar-custom sticky-top mx-auto toplink-color">
     <a class="navbar-brand toplink-color" href="/"><b>SIRUCO</b></a>
     <!-- Toggle Button for Responsive -->
-    <button class="navbar-toggler collapsed toplink-color" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler collapsed toplink-color" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"><i class="fa fa-align-justify"></i></span>
     </button>
     <!-- Start Links -->
@@ -37,7 +34,8 @@
         <!-- Hotel Dropdown Start -->
         {% if request.session.peran == 'ADMIN_SISTEM' or request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             Hotel
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -50,9 +48,9 @@
             {% endif %}
             <a class="dropdown-item" href="#">List Ruangan Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
-            <a class="dropdown-item" href="#">Buat Paket Makan</a>
+            <a class="dropdown-item" href="{% url 'create_paket_makan' %}">Buat Paket Makan</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Paket Makan</a>
+            <a class="dropdown-item" href="{% url 'list_paket_makan' %}">List Paket Makan</a>
             {% if request.session.peran == 'PENGGUNA_PUBLIK' %}
             <a class="dropdown-item" href="#">Buat Reservasi Hotel</a>
             <a class="dropdown-item" href="#">List Reservasi Hotel</a>
@@ -64,16 +62,17 @@
         <!-- Pasien Dropdown Start  -->
         {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'DOKTER' or request.session.peran == 'ADMIN_SATGAS' %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pasien</a>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">Pasien</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'PENGGUNA_PUBLIK' %}
             <a class="dropdown-item" href="{% url 'create_pasien' %}">Pendaftaran Pasien</a>
             <a class="dropdown-item" href="{% url 'list_pasien' %}">List Pasien</a>
             {% endif %}
             {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="#">Buat Appointment</a>
+            <a class="dropdown-item" href="{% url 'memeriksa:create_appointment' %}">Buat Appointment</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Appointment</a>
+            <a class="dropdown-item" href="{% url 'memeriksa:list_appointment' %}">List Appointment</a>
             {% if request.session.peran == 'DOKTER' %}
             <a class="dropdown-item" href="#">Buat Hasil Tes Pasien</a>
             {% endif %}
@@ -85,16 +84,19 @@
         <!-- Rumah Sakit Dropdown Start  -->
         {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'DOKTER' or request.session.peran == 'ADMIN_SATGAS' %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rumah Sakit</a>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">Rumah Sakit</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'ADMIN_SATGAS' %}
             <a class="dropdown-item" href="{% url 'create_rs' %}">Buat RS</a>
-            <a class="dropdown-item" href="{% url 'list_rs' %}">List Pasien</a>
+            <a class="dropdown-item" href="{% url 'list_rs' %}">List RS</a>
             {% endif %}
             {% if request.session.peran == 'DOKTER' %}
-            <a class="dropdown-item" href="#">Buat Jadwal Dokter</a>
+            <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter_sendiri' %}">Buat Jadwal
+              Dokter</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Jadwal Dokter</a> <!-- bisa diliat semua-->
+            <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter' %}">List Jadwal Dokter</a>
+            <!-- bisa diliat semua-->
             {% if request.session.peran == 'ADMIN_SATGAS' %}
             <a class="dropdown-item" href="#">Buat Ruangan RS</a>
             <a class="dropdown-item" href="#">List Ruangan RS</a>
@@ -102,7 +104,7 @@
             <a class="dropdown-item" href="#">List Bed RS</a>
             <a class="dropdown-item" href="{% url 'create_reservasi_rs' %}">Buat Reservasi RS</a>
             {% endif %}
-            <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a> 
+            <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a>
           </div>
         </li>
         {% endif %}
@@ -111,7 +113,8 @@
         <!-- Transaksi Dropdown Start  -->
         {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Transaksi</a>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">Transaksi</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'PENGGUNA_PUBLIK' %}
             <a class="dropdown-item" href="#">Bayar Transaksi RS</a>
@@ -122,8 +125,8 @@
             <a class="dropdown-item" href="#">List Transaksi Hotel</a>
             {% endif %}
             <a class="dropdown-item" href="#">List Transaksi Booking Hotel</a>
-            <a class="dropdown-item" href="#">Buat Transaksi Makan dan Daftar Pesan</a>
-            <a class="dropdown-item" href="#">List Transaksi Makan dan Daftar Pesan</a>
+            <a class="dropdown-item" href="{% url 'create_transaksi_makan' %}">Buat Transaksi Makan dan Daftar Pesan</a>
+            <a class="dropdown-item" href="{% url 'list_transaksi_makan' %}">List Transaksi Makan dan Daftar Pesan</a>
           </div>
         </li>
         {% endif %}
@@ -135,6 +138,8 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'create_faskes' %}">Buat Faskes</a>
             <a class="dropdown-item" href="{% url 'list_faskes' %}">List Faskes</a>
+            <a class="dropdown-item" href="{% url 'create_jadwal' %}">Buat Jadwal Faskes</a>
+            <a class="dropdown-item" href="{% url 'list_jadwal' %}">List Jadwal Faskes</a>
           </div>
         </li>
         {% endif %}
@@ -178,18 +183,13 @@
 
     {% endblock content %}
   </div>
+  
   <!-- script js jquery nya bootstrap-->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-    {% block extra_script %}
+  {% block extra_script %}
   {% endblock extra_script %}
 
 
