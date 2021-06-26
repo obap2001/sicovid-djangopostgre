@@ -40,9 +40,9 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'ADMIN_SISTEM' %}
-            <a class="dropdown-item" href="{% url 'create_hotel' %}">Buat Hotel</a>
+            <a class="dropdown-item" href="#">Buat Hotel</a>
             {% endif %}
-            <a class="dropdown-item" href="{% url 'list_hotel' %}">List Hotel</a>
+            <a class="dropdown-item" href="#">List Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <a class="dropdown-item" href="#">Buat Ruangan Hotel</a>
             {% endif %}
