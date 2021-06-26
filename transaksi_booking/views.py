@@ -7,19 +7,19 @@ from django.contrib import messages
 def list_transaksi_booking_view(request):
     if 'username' in request.session and (request.session['peran'] == 'ADMIN_SATGAS' or request.session['peran'] == 'PENGGUNA_PUBLIK' ):
         response = {}
-        data_reservasi = []
+        data_booking = []
 
         # Fetch Data
         with connection.cursor() as cursor:
             cursor.execute(f'''
             SELECT * FROM TRANSAKSI_BOOKING;
             ''')
-            data_reservasi = cursor.fetchall()
+            data_booking = cursor.fetchall()
 
         # Reorganized Data
         id_now = 1
         data_organized = []
-        for i in data_reservasi:
+        for i in data_booking:
             temp = (id_now, i[0],i[1],i[2],i[3].strftime('%d-%m-%Y'))
             data_organized.append(temp)
             id_now += 1
