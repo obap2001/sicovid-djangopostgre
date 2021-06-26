@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> List Ruangan Rumah Sakit </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content  %}
+
+<h1>List Ruangan Rumah Sakit</h1>
+
+<table class="table">
+    <thead>
+        
+            <th>No.</th>
+            <th>Kode RS</th>
+            <th>Kode Ruangan</th>
+            <th>Tipe</th>
+            <th>Jumlah Bed</th>
+            <th>Harga Ruangan</th>
+            {% if request.session.peran == 'ADMIN_SATGAS' %}
+            <th>Action</th>
+            {% endif %}
+
+    </thead>
+    {% for data in data_ruangan_rs %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>F{{ data.0 }}</td>
+        <td>R{{ data.1 }}</td>
+        <td>{{ data.2 }}</td>
+        <td>{{ data.3 }}</td>
+        <td>{{ data.4 }}</td>
+        {% if request.session.peran == 'ADMIN_SATGAS' %}
+        <td>
+            <form action="{% url 'ruangan_bed_rs:update_ruanganrs' %}" method="get">
+                <input type="hidden" id="kode_rs" name="kode_rs" value="F{{ data.0 }}">
+                <input type="hidden" id="kode_ruangan" name="kode_ruangan" value="R{{ data.1 }}">
+                <input type="submit" class="btn btn-success" value="Update">
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>		
+
+{% endblock content %}

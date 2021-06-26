@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title> List Bed Rumah Sakit </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+
+<h1>List Bed Rumah Sakit</h1>
+
+<table class="table">
+    <thead>
+
+        <th>No.</th>
+        <th>Kode RS</th>
+        <th>Kode Ruangan</th>
+        <th>Kode Bed</th>
+        {% if request.session.peran == 'ADMIN_SATGAS' %}
+        <th>Action</th>
+        {% endif %}
+
+    </thead>
+    {% for data in data_bed %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>F{{ data.0 }}</td>
+        <td>R{{ data.1 }}</td>
+        <td>B{{ data.2 }}</td>
+        {% if request.session.peran == 'ADMIN_SATGAS' %}
+        <td>
+            <form action="{% url 'ruangan_bed_rs:delete_bedrs' %}" method="get">
+                <input type="hidden" id="koders" name="kode_rs" value="F{{ data.0 }}">
+                <input type="hidden" id="koderuangan" name="kode_ruangan" value="R{{ data.1 }}">
+                <input type="hidden" id="kodebed" name="kode_bed" value="B{{ data.2 }}">
+                <input type="submit" class="btn btn-danger" value="Delete">
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

@@ -9,7 +9,7 @@
     <h1 class="display-4">List Ruangan Hotel</h1>
     <hr class="my-4">
     {% if request.session.peran == "ADMIN_SISTEM" %}
-        <a class="btn btn-primary" href="{% url 'create_reservasi_rs' %}" role="button">CREATE</a>
+        <a class="btn btn-primary" href="{% url 'create_ruangan_hotel' %}" role="button">CREATE</a>
     {% endif %}
 
     <table class="table">

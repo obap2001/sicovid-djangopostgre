@@ -11,7 +11,7 @@
 
     <form method = "POST">
         {% csrf_token %}
-        {{ form_reservasi|crispy }}
+        {{ form_create_ruangan|crispy }}
     <input class="btn btn-light" name="num" type="submit" value="Submit">
     </form>
 {% endblock  %}
