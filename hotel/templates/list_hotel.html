@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Daftar Hotel </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Daftar Hotel</h1>
+    <hr class="my-4">
+    <table class="table">
+        <thead>
+          <tr>
+            <!-- <th scope="col">No</th> -->
+            <th scope="col">No.</th>
+            <th scope="col">Kode</th>
+            <th scope="col">Hotel</th>
+            <th scope="col">Rujukan</th>
+            <th scope="col">Alamat</th>
+            {% if request.session.peran == 'ADMIN_SISTEM' %}
+            <th scope="col">Action</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data_hotel %}
+          <tr>
+            <!-- <th scope="row">{{ a }}</th> -->
+            <th>{{ i.8 }}</th>
+            <th>{{ i.0 }}</th>
+            <td>{{ i.1 }}</td>
+            <td>{% if  i.2 == '1' %}
+                <input type="checkbox" name="done" value='True' disabled=True checked>
+                {% else %}
+                <input type="checkbox" name="done" value='False' disabled=True>
+                {% endif %}
+            </td>
+            <td>{{ i.3 }}, {{i.4}}, {{i.5}}, {{i.6}}, {{i.7}}</td>
+            {% if request.session.peran == 'ADMIN_SISTEM' %}
+            <td > 
+                <a class="btn btn-primary" href="{% url 'update_hotel' kode=i.0 %}" role="button">UPDATE</a>
+              </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+{% endblock  %}

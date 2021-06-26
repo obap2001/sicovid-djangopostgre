@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create Transaksi Makan </title>
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block content  %}
+    <h1 class="display-4">Daftar Transaksi Makan</h1>
+    <hr class="my-4">
+    <a class="btn btn-primary" href="{% url 'create_transaksi_makan' %}" role="button">Buat Transaksi Makan dan Daftar Pesan</a>
+    <p> </p>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id Transaksi Hotel</th>
+            <th scope="col">Id Transaksi</th>
+            <th scope="col">Total Bayar</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data_transmakan %}
+          <tr>
+            <th scope="row">{{ i.0 }}</th>
+            <td>{{ i.1 }}</td>
+            <td>{{ i.2 }}</td>
+            <td>
+              <a class="btn btn-primary" href="#" role="button">UPDATE</a>
+              <a class="btn btn-primary" href="{% url 'delete_transmakan' idtransaksimakan=i.1 %}" role="button">DELETE</a>
+              <a class="btn btn-primary" href="{% url 'detail_transaksi_makan' idtransaksimakan=i.1 %}" role="button">DETAIL</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+{% endblock  %}
