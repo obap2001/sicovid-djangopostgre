@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'login',
     'transaksi_makan',
     'paket_makan',
+    'hotel',
     'pendaftaran_pasien',
     'reservasi_rumah_sakit',
     'faskes',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'reservasi_hotel',
     'cr_jadwal_dokter',
     'memeriksa'
+
 ]
 
 MIDDLEWARE = [
