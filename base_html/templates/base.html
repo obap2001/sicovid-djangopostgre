@@ -48,9 +48,9 @@
             {% endif %}
             <a class="dropdown-item" href="#">List Ruangan Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
-            <a class="dropdown-item" href="#">Buat Paket Makan</a>
+            <a class="dropdown-item" href="{% url 'create_paket_makan' %}">Buat Paket Makan</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Paket Makan</a>
+            <a class="dropdown-item" href="{% url 'list_paket_makan' %}">List Paket Makan</a>
             {% if request.session.peran == 'PENGGUNA_PUBLIK' %}
             <a class="dropdown-item" href="#">Buat Reservasi Hotel</a>
             <a class="dropdown-item" href="#">List Reservasi Hotel</a>
@@ -125,8 +125,8 @@
             <a class="dropdown-item" href="#">List Transaksi Hotel</a>
             {% endif %}
             <a class="dropdown-item" href="#">List Transaksi Booking Hotel</a>
-            <a class="dropdown-item" href="#">Buat Transaksi Makan dan Daftar Pesan</a>
-            <a class="dropdown-item" href="#">List Transaksi Makan dan Daftar Pesan</a>
+            <a class="dropdown-item" href="{% url 'create_transaksi_makan' %}">Buat Transaksi Makan dan Daftar Pesan</a>
+            <a class="dropdown-item" href="{% url 'list_transaksi_makan' %}">List Transaksi Makan dan Daftar Pesan</a>
           </div>
         </li>
         {% endif %}
