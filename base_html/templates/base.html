@@ -98,10 +98,10 @@
             <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter' %}">List Jadwal Dokter</a>
             <!-- bisa diliat semua-->
             {% if request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="#">Buat Ruangan RS</a>
-            <a class="dropdown-item" href="#">List Ruangan RS</a>
-            <a class="dropdown-item" href="#">Buat Bed RS</a>
-            <a class="dropdown-item" href="#">List Bed RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:create_ruanganrs' %}">Buat Ruangan RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:list_ruanganrs' %}">List Ruangan RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:create_bedrs' %}">Buat Bed RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:list_bedrs' %}">List Bed RS</a>
             <a class="dropdown-item" href="{% url 'create_reservasi_rs' %}">Buat Reservasi RS</a>
             {% endif %}
             <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a>
@@ -192,8 +192,5 @@
 
 
 </body>
-
-
-
 
 </html>

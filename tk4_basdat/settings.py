@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'rumah_sakit',
     'transaksi_rumah_sakit',
     'cr_jadwal_dokter',
-    'memeriksa'
+    'memeriksa',
+    'ruangan_bed_rs'
 ]
 
 MIDDLEWARE = [
