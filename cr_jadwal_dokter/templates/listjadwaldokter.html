@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block content %}
+<div style="padding-top:50px">
 <table class="table">
     <center>
         <h1>List Jadwal Dokter</h1>
@@ -51,5 +52,8 @@
         {% endif %}
     </tbody>
 </table>
+{% if request.session.peran == 'DOKTER' %}
 <button type="button" class="btn btn-primary btn-lg btn-block"><a href="{% url 'cr_jadwal_dokter:list_jadwal_dokter_sendiri' %}" style="text-decoration:none; color:#fff;">Buat Jadwal Baru</a></button>
+{% endif %}
+</div>
 {% endblock %}
