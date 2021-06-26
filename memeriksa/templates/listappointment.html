@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title> Read Appointment </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+
+<center>
+    <h1>List Appointment</h1>
+</center>
+<table class="table">
+    <thead>
+        <th scope="col">No.</th>
+        <th scope="col">NIK Pasien</th>
+        <th scope="col">Email Dokter</th>
+        <th scope="col">Faskes</th>
+        <th scope="col">Shift</th>
+        <th scope="col">Tanggal</th>
+        <th scope="col">Rekomendasi</th>
+        <!-- admin satgas and dokter can delete/update data according to their role  -->
+        {% if request.session.peran == 'ADMIN_SATGAS' or request.session.peran == 'DOKTER' %}
+        <th scope="col">Action</th>
+        {% endif %}
+
+    </thead>
+    <tbody>
+        {% for i in getdata %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ i.0 }}</td> 
+            <td>{{ i.2 }}</td>
+            <td>{{ i.3 }}</td>
+            <td>{{ i.4 }}</td>
+            <td>{{ i.5 }}</td>
+            <td>{{ i.6 }}</td>
+
+            <!-- if user's role is admin satgas, delete button is available -->
+            {% if request.session.peran == 'ADMIN_SATGAS' %}
+            <td>
+                <form action="{% url 'memeriksa:delete_appointment' %}" method="get">
+                    <input type="hidden" id="nik_pasien" name="nik_pasien" value="{{ i.0 }}">
+                    <input type="hidden" id="username" name="username" value="{{ i.2 }}">
+                    <input type="hidden" id="kode_faskes" name="kode_faskes" value="{{ i.3 }}">
+                    <input type="hidden" id="shift" name="shift" value="{{ i.4 }}">
+                    <input type="hidden" id="tanggal" name="tanggal" value="{{ i.5 }}">
+                    <input type="submit" class="btn btn-success" value="Delete">
+                </form>
+            </td>
+            {% endif %}
+
+            <!-- if user's role is dokter, update button is available  -->
+            {% if request.session.peran == 'DOKTER' %}
+            <td>
+                <form action="{% url 'memeriksa:update_appointment' %}" method="get">
+                    <input type="hidden" id="nik_pasien" name="nik_pasien" value="{{ i.0}}">
+                    <input type="hidden" id="username" name="username" value="{{ i.2 }}">
+                    <input type="hidden" id="kode_faskes" name="kode_faskes" value="{{ i.3 }}">
+                    <input type="hidden" id="shift" name="shift" value="{{ i.4 }}">
+                    <input type="hidden" id="tanggal" name="tanggal" value="{{ i.5 }}">
+                    <input type="submit" class="btn btn-success" value="Update">
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
+<form action="{% url 'memeriksa:create_appointment' %}" method="get">
+    <input type="submit" class="btn btn-outline-primary" value="Buat Appointment">
+</form>
+{% endif %}
+{% endblock %}
