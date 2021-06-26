@@ -14,13 +14,13 @@
 
     <div class="form-group">
     <div>
-    <h4>{{ form.kode_rs.label }}</h4>
+    <h5>{{ form.kode_rs.label }}</h5>
     <div class="input-group mb-3 ">   
       {{ form.kode_rs }}
     </div>
 
     <br>
-    <label style="font-size: 23px; font-weight: bold" for="ruangan_rs">Kode Ruangan</label>
+    <label style="font-size: 20px; font-weight: bold" for="ruangan_rs">Kode Ruangan</label>
     <select class="form-control mb-3"  name="kode_rs" id="kode_rs">
         {% for eachkode in kode_rs %}
         <option value={{eachkode.0}}>{{eachkode.0}}</option>
@@ -29,12 +29,12 @@
     <br>
 
     <br>
-    <label style="font-size: 23px; font-weight: bold" for="bed_rs">Kode Bed</label>
+    <label style="font-size: 20px; font-weight: bold" for="bed_rs">Kode Bed</label>
       <input class="form-control" name="bed_rs" id="bed_rs" readonly>
       </input>
     <br>
         </div>
-    <input class="btn btn-outline-primary" type="submit" value="Simpan">
+    <input class="btn btn-success" type="submit" value="Simpan">
 
   </form>
 
