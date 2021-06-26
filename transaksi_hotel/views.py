@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.db import connection
 from django.contrib import messages
 from .forms import UpdateTransaksiForm
+import datetime
 
 # Create your views here.
 
@@ -67,19 +68,42 @@ def update_transaksi_hotel_view(request,id):
             ''')
             data_transaksi= cursor.fetchone()
 
-        init_transaksi= {
-            'nik_pasien': data_transaksi[1],
-            'id_transaksi': data_transaksi[0],
-            'tanggal_pembayaran': data_transaksi[2].strftime('%d-%m-%Y'),
-            'waktu_pembayaran': '-',
-            'total_biaya': data_transaksi[4],
-            'status_bayar': data_transaksi[5]
-        }
+        data_organized = []
+        for i in data_transaksi:
+            
 
-        form_transaksi= UpdateTransaksiForm(request.POST or None, initial=init_transaksi)
+            temp = []
+            if i[2] == None and i[3] == None:
+                temp = (i[0],i[1],'-', '-',int_to_currency(i[4]),i[5])
+                
+            elif i[3] == None:
+                tglmsk = datetime.datetime.strptime(i[2],'%d-%m-%Y')
+                tglmsk = tglmsk.strftime
+                temp = (i[0],i[1],tglmsk,'-',int_to_currency(i[4]),i[5])
+            elif i[2] != None and i[3] != None:
+                tglmsk = datetime.datetime.strptime(i[2],'%d-%m-%Y')
+                tglmsk = tglmsk.strftime
+                waktu = datetime.datetime.strptime(i[3],'%H:%M:%S')
+                waktu = waktu.strftime
+                temp = (i[0],i[1],tglmsk,waktu,int_to_currency(i[4]),i[5])
+
+            data_organized.append(temp)
+
+        # init_transaksi= {
+        #     'nik_pasien': data_transaksi[1],
+        #     'id_transaksi': data_transaksi[0],
+        #     'tanggal_pembayaran': data_transaksi[2].strftime('%d-%m-%Y'),
+        #     'waktu_pembayaran': '-',
+        #     'total_biaya': data_transaksi[4],
+        #     'status_bayar': data_transaksi[5]
+        # }
+
+        form_transaksi= UpdateTransaksiForm(request.POST or None, initial=data_organized)
         response['form_transaksi'] = form_transaksi
 
         if request.method == 'POST' and form_transaksi.is_valid():
+
+
             status_bayar = form_transaksi.cleaned_data['status_bayar']
 
             with connection.cursor() as cursor:
