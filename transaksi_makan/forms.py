@@ -60,16 +60,6 @@ class createTransaksiMakanForm(forms.Form):
 
 class pesananForm(forms.Form):
     kode_paket = forms.CharField(widget=forms.Select(choices=[]), required=True)
-
-class DetailTransaksiMakanForm(forms.Form):
-    idtransaksi = forms.TimeField(disabled=True)
-    idtransaksimakan = forms.CharField(max_length=10, disabled=True)
-    kodeHotel = forms.CharField(max_length=5, disabled=True)
-
-class DetailPesananForm(forms.Form):
-    id_pesanan = forms.IntegerField(disabled=True)
-    kodepaket = forms.CharField(max_length=5, disabled=True)
-    harga = forms.IntegerField(disabled=True)
     
 class UpdateTransaksiForm(forms.Form):
     idtransaksi = forms.CharField(max_length=10, disabled=True)

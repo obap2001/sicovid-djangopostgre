@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.db import close_old_connections, connection
 from .forms import UpdatePesananForm, UpdateTransaksiForm, createTransaksiMakanForm, fetch_data_transaksi_hotel, pesananForm
-from .forms import DetailTransaksiMakanForm, DetailPesananForm
+
 
 # Create your views here.
 def create_transaksi_makan_view(request):
@@ -93,8 +93,6 @@ def create_transaksi_makan_view(request):
             messages.success(request, f'Transaksi Makana Berhasil ditambahkan')
             return redirect('daftar_transaksi_makan')
 
-        # elif request.method == 'GET':
-        #     kode_hotel = request.GET.get('')
 
         return render(request, 'create_transmakan.html', response)
 
@@ -185,19 +183,6 @@ def detail_transaksi_makan_view(request, idtransaksi, idtransaksimakan):
         if not data_pesanan:
             return False
 
-        init_kode_hotel = {
-            'idtransaksi' : idtransaksi,
-            'idtransaksimakan' : idtransaksimakan,
-            'kodeHotel' : kode_hotel[0]
-        }
-        init_data_pesan = {
-            'id_pesanan' : data_pesanan[0],
-            'kodepaket' : data_pesanan[1],
-            'harga' : data_pesanan[2]
-        }
-        #Instantiate Form
-        form_transaksi = DetailTransaksiMakanForm(request.POST or None, initial=init_kode_hotel)
-        form_pesanan = DetailPesananForm(request.POST or None, initial=init_data_pesan)
 
         data_all = []
         data_pesan = []
@@ -242,6 +227,7 @@ def update_transaksi_makan_view(request, idtransaksimakan):
         if request.method == 'POST' and form_transmakan.is_valid() and form_pesanan.is_valid():
             idtransaksi = form_transmakan.cleaned_data['idtransaksi']
             idtransaksimakan = form_transmakan.cleaned_data['idtransaksimakan']
+    return redirect('home')
 
 
 def fetch_data_transaksi_makan(request, idtransaksi, kode):
@@ -294,7 +280,7 @@ def fetch_data_transaksi_makan(request, idtransaksi, kode):
     return [init_transaksi_data,init_pesanan_data]
 
 def fetch_data_transmakan(request):
-    tm = request.GET.get('idTransaksi')
+    # tm = request.GET.get('idTransaksi')
     list_hotel = []
 
     with connection.cursor() as cursor:
