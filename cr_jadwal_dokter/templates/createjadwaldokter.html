@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> register </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content  %}
+
+<center>
+  <h1>Buat Jadwal Baru</h1>
+</center>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Kode Faskes</th>
+        <th scope="col">Shift</th>
+        <th scope="col">Tanggal</th>
+        <th scope="col">Buat Jadwal Dokter</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in jadwals %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ data.0 }}</td>
+        <td>{{ data.1 }}</td>
+        <td>{{ data.2 }}</td>
+        <td>
+            <form action="{% url 'cr_jadwal_dokter:create_jadwal_dokter' %}" method="GET">
+              <input type="hidden" id="username" name="username" value="{{ request.session.username }}">
+              <input type="hidden" id="kode_faskes" name="kode_faskes" value="{{ data.0 }}">
+              <input type="hidden" id="shift" name="shift" value="{{ data.1 }}">
+              <input type="hidden" id="tanggal" name="tanggal" value="{{ data.2 }}">
+              <input type="submit" class="btn btn-success" value="Create">
+            </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>  
+{% endblock  %}
+ 
