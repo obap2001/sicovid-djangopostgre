@@ -12,10 +12,11 @@
     <form method = "POST">
         {% csrf_token %}
         {{ form_hotel|crispy }}
-        <h3>Alamat:</h3>
+        <p>Alamat:</p>
         {% csrf_token %}
         {{ form_alamat|crispy }}
     <input class="btn btn-light" name="num" type="submit" value="Submit">
     </form>
+    <br> <br>
 {% endblock  %}
 

@@ -1,3 +1,4 @@
+from typing import Collection
 from django.shortcuts import render, redirect
 from django.http import response
 from django.contrib import messages
