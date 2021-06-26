@@ -7,31 +7,34 @@
 {% endblock style %}
 {% block content %}
 
-<h1>Update Appointment</h1>
+<div style="padding-top:50px; padding-left:100px; padding-right:100px; padding-bottom:50px;">
+<div style="padding-bottom:20px;">
+<h1>Update Appointment<br></h1>
+</div>
 <form action="{% url 'memeriksa:update_appointment' %}" method="post">
     {% csrf_token %}
     <div class="form-group">
         <div>
-            <h4>{{ form.nik_pasien.label }}</h4>
+            <h5>{{ form.nik_pasien.label }}</h5>
             <div class="input-group mb-3 ">{{ form.nik_pasien }}</div>
 
-            <h4>{{ form.email_dokter.label }}</h4>
+            <h5>{{ form.email_dokter.label }}</h5>
             <div class="input-group mb-3">{{ form.email_dokter }}</div>
 
-            <h4>{{ form.shift.label }}</h4>
+            <h5>{{ form.shift.label }}</h5>
             <div class="input-group mb-3">{{ form.shift }}</div>
 
-            <h4>{{ form.tanggal.label }}</h4>
+            <h5>{{ form.tanggal.label }}</h5>
             <div class="input-group mb-3">{{ form.tanggal }}</div>
 
-            <h4>{{ form.kode_faskes.label }}</h4>
+            <h5>{{ form.kode_faskes.label }}</h5>
             <div class="input-group mb-3">{{ form.kode_faskes }}</div>
 
-            <h4>{{ form.rekomendasi.label }}</h4>
+            <h5>{{ form.rekomendasi.label }}</h5>
             <div class="input-group mb-3">{{ form.rekomendasi }}</div>
         </div>
-        <input class="btn btn-outline-primary" type="submit" value="Simpan">
-</form>
+        <input class="btn btn-success" type="submit" value="Simpan">
 </div>
+</form>
 
 {% endblock %}

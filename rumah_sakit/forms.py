@@ -20,6 +20,8 @@ def fetch_data_rs():
         temp = (i[0],f'({i[0]}) {i[1]}')
         data_organized.append(temp)
 
+    print(tuple(data_organized))
+
     return tuple(data_organized)
 
 def fetch_data_rs_not_filter():

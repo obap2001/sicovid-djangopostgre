@@ -28,3 +28,4 @@ class form_update_appointment(forms.Form):
 	tanggal = forms.CharField(label="Tanggal Praktek", required=False, widget=forms.TextInput(attrs={'class': 'form-control','readonly': True}))   
 	shift = forms.CharField(label="Shift Praktek", required=False, widget=forms.TextInput(attrs={'class': 'form-control','readonly': True}))
 	rekomendasi = forms.CharField(label="Rekomendasi", required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+

@@ -17,7 +17,7 @@ def create_ruangan_hotel_view(request):
         # Cleaned data
         data_clean = []
         for i in id_all:
-            data_clean.append(i[0])
+            data_clean.append(i[0],)
 
         # Generate all possible id
         id_now = ''
@@ -47,12 +47,14 @@ def create_ruangan_hotel_view(request):
             harga_per_hari = form_create_ruangan.cleaned_data['harga_per_hari']
 
             with connection.cursor() as cursor:
-                    cursor.execute(f'''
-                        INSERT INTO HOTEL_ROOM VALUES
-                        ('{kode_hotel}','{kode_ruangan}','{jenis_bed}','{tipe}','{harga_per_hari}')
-                    ''')
+                cursor.execute(f'''
+                    INSERT INTO HOTEL_ROOM VALUES
+                    ('{kode_hotel}','{kode_ruangan}','{jenis_bed}','{tipe}','{harga_per_hari}')
+                ''')
 
             messages.success(request, 'Data Ruangan Hotel Behasil ditambahkan')
+            messages.error(request, 'Data yangdiisikan belum lengkap, silahkan lengkapi data terlebih dahulu.')
+
             return redirect('list_ruangan_hotel')
 
         return render(request,'create_ruangan_hotel.html',response)
@@ -114,6 +116,7 @@ def update_ruangan_hotel_view(request,kode_hotel,kode_ruangan):
             jenis_bed = form_ruangan_hotel.cleaned_data['jenis_bed']
             tipe = form_ruangan_hotel.cleaned_data['tipe']
             harga_per_hari = form_ruangan_hotel.cleaned_data['harga_per_hari']
+
 
             with connection.cursor() as cursor:
                     cursor.execute(f'''

@@ -89,7 +89,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if request.session.peran == 'ADMIN_SATGAS' %}
             <a class="dropdown-item" href="{% url 'create_rs' %}">Buat RS</a>
-            <a class="dropdown-item" href="{% url 'list_rs' %}">List Pasien</a>
+            <a class="dropdown-item" href="{% url 'list_rs' %}">List RS</a>
             {% endif %}
             {% if request.session.peran == 'DOKTER' %}
             <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter_sendiri' %}">Buat Jadwal
@@ -98,13 +98,15 @@
             <a class="dropdown-item" href="{% url 'cr_jadwal_dokter:list_jadwal_dokter' %}">List Jadwal Dokter</a>
             <!-- bisa diliat semua-->
             {% if request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="#">Buat Ruangan RS</a>
-            <a class="dropdown-item" href="#">List Ruangan RS</a>
-            <a class="dropdown-item" href="#">Buat Bed RS</a>
-            <a class="dropdown-item" href="#">List Bed RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:create_ruanganrs' %}">Buat Ruangan RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:list_ruanganrs' %}">List Ruangan RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:create_bedrs' %}">Buat Bed RS</a>
+            <a class="dropdown-item" href="{% url 'ruangan_bed_rs:list_bedrs' %}">List Bed RS</a>
             <a class="dropdown-item" href="{% url 'create_reservasi_rs' %}">Buat Reservasi RS</a>
             {% endif %}
-            <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a>
+            {% if request.session.peran == 'ADMIN_SATGAS' or request.session.peran == 'PENGGUNA_PUBLIK' %}
+            <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a> 
+            {% endif %} 
           </div>
         </li>
         {% endif %}
@@ -124,7 +126,7 @@
             <a class="dropdown-item" href="{% url 'list_transaksi_rs' %}">List Transaksi RS</a>
             <a class="dropdown-item" href="#">List Transaksi Hotel</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Transaksi Booking Hotel</a>
+            <a class="dropdown-item" href="{% url 'list_transaksi_booking' %}">List Transaksi Booking Hotel</a>
             <a class="dropdown-item" href="{% url 'create_transaksi_makan' %}">Buat Transaksi Makan dan Daftar Pesan</a>
             <a class="dropdown-item" href="{% url 'list_transaksi_makan' %}">List Transaksi Makan dan Daftar Pesan</a>
           </div>
@@ -138,6 +140,8 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'create_faskes' %}">Buat Faskes</a>
             <a class="dropdown-item" href="{% url 'list_faskes' %}">List Faskes</a>
+            <a class="dropdown-item" href="{% url 'create_jadwal' %}">Buat Jadwal Faskes</a>
+            <a class="dropdown-item" href="{% url 'list_jadwal' %}">List Jadwal Faskes</a>
           </div>
         </li>
         {% endif %}
@@ -192,8 +196,5 @@
 
 
 </body>
-
-
-
 
 </html>

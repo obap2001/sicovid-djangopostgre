@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Update Ruangan Rumah Sakit </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content  %}
+
+<h1>Update Ruangan Rumah Sakit</h1>
+
+<form action="{% url 'ruangan_bed_rs:update_ruanganrs' %}" method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+
+    <div>
+    <h5>{{ form.kode_rs.label }}</h5>
+    <div class="input-group mb-3 ">   
+      {{ form.kode_rs }}
+    </div>
+
+    <h5>{{ form.kode_ruangan.label }}</h5>
+    <div class="input-group mb-3">  
+      {{ form.kode_ruangan }}
+    </div>
+
+    <h5>{{ form.tipe.label }}</h5> 
+    <div class="input-group mb-3"> 
+      {{ form.tipe }}
+    </div>
+
+    <h5>{{ form.harga.label }}</h5>
+    <div class="input-group mb-3">  
+      {{ form.harga }}
+    </div>
+
+        </div>
+    <input class="btn btn-success" type="submit" value="Update">
+
+  </form>
+
+
+{% endblock content %}

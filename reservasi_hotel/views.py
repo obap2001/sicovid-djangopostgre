@@ -7,8 +7,7 @@ from .forms import CreateReservasiForm, UpdateReservasiForm
 def create_reservasi_hotel_view(request):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SATGAS' or request.session and request.session['peran'] == 'PENGGUNA_PUBLIK':
         response = {}
-
-        form_reservasi = CreateReservasiForm(request.POST or None)
+        form_reservasi = CreateReservasiForm(request.POST or None,peran=request.session['peran'],username=request.session['username'])
         response['form_reservasi'] = form_reservasi
 
         if request.method == 'POST' and form_reservasi.is_valid():
@@ -19,15 +18,15 @@ def create_reservasi_hotel_view(request):
             kode_ruangan = form_reservasi.cleaned_data['kode_ruangan']
 
             with connection.cursor() as cursor:
-                    cursor.execute(f'''
-                        INSERT INTO RESERVASI_HOTEL VALUES
-                        ('{nik}','{tanggal_masuk}','{tanggal_keluar}','{kode_hotel}','{kode_ruangan}')
-                    ''')
+                cursor.execute(f'''
+                    INSERT INTO RESERVASI_HOTEL VALUES
+                    ('{nik}','{tanggal_masuk}','{tanggal_keluar}','{kode_hotel}','{kode_ruangan}')
+                ''')
 
             messages.success(request, 'Data Reservasi Behasil ditambahkan')
             return redirect('list_reservasi_hotel')
 
-        return render(request,'create_reservasi_hotel.html',response)
+        return render(request,'create_reservasi_hotel.html',response,)
     else:
         return redirect('home')
 
@@ -36,18 +35,35 @@ def list_reservasi_hotel_view(request):
         response = {}
         data_reservasi = []
 
+        peran = request.session['peran']
+        username = request.session['username']
+
         # Fetch Data
         with connection.cursor() as cursor:
             cursor.execute(f'''
             SELECT * FROM RESERVASI_HOTEL;
             ''')
             data_reservasi = cursor.fetchall()
+        
+        with connection.cursor() as cursor:
+            if request.session['peran'] == 'PENGGUNA_PUBLIK':
+                cursor.execute(f'''
+                    SELECT * FROM RESERVASI_HOTEL
+                    WHERE kodepasien IN
+                    (SELECT p.nik from pasien p where p.idpendaftar = '{username}');
+                ''')
+                data_reservasi = cursor.fetchall()
+            else:
+                cursor.execute(f'''
+                SELECT * FROM RESERVASI_HOTEL;
+                ''')
+                data_reservasi = cursor.fetchall()
 
         # Reorganized Data
         id_now = 1
         data_organized = []
         for i in data_reservasi:
-            temp = (id_now, i[0],i[1].strftime('%d-%m-%Y'), i[2].strftime('%d-%m-%Y'),i[3],i[4],i[5] )
+            temp = (id_now, i[0],i[1].strftime('%d-%m-%Y'), i[2].strftime('%d-%m-%Y'),i[3],i[4])
             data_organized.append(temp)
             id_now += 1
         response['data_reservasi'] = data_organized
@@ -79,8 +95,9 @@ def update_reservasi_hotel_view(request,kode_pasien,tanggal):
             'kode_hotel': data_reservasi[3],
             'kode_ruangan': data_reservasi[4],
         }
-
         form_reservasi = UpdateReservasiForm(request.POST or None, initial=init_reservasi)
+
+        # form_reservasi = UpdateReservasiForm(request.POST or None, initial=init_reservasi,kode_pasien=kode_pasien,tanggal=tanggal)
         response['form_reservasi'] = form_reservasi
 
         if request.method == 'POST' and form_reservasi.is_valid():
@@ -110,7 +127,7 @@ def delete_reservasi_hotel_view(request,kode_pasien,tanggal):
             cursor.execute(
                 f'''
                 DELETE FROM RESERVASI_HOTEL
-                WHERE kodepasien = '{kode_pasien}' and
+                WHERE kodepasien = '{kode_pasien}' AND
                 tglmasuk='{tanggal_splitted[2]}-{tanggal_splitted[1]}-{tanggal_splitted[0]}';
                 '''
             )
@@ -121,20 +138,20 @@ def delete_reservasi_hotel_view(request,kode_pasien,tanggal):
                 '''
             )
         messages.success(request, f'Data Reservasi berhasil dihapus')
-        return redirect('list_reservasi_rs')
+        return redirect('list_reservasi_hotel')
 
     else:
         return redirect('home')
 
 
 def fetch_data_ruangan(request):
-    ruangan = request.GET.get('ruangan')
+    hotel = request.GET.get('kodehotel')
     list_ruangan = []
 
     with connection.cursor() as cursor:
         cursor.execute(f'''
             SELECT koderoom FROM HOTEL_ROOM
-            WHERE kodehotel='{ruangan}' AND jmlbed > 0  ;
+            WHERE kodehotel='{hotel}';
         ''')
         list_ruangan = cursor.fetchall()
 

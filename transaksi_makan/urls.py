@@ -6,5 +6,5 @@ urlpatterns = [
     path('', list_transaksi_makan_view, name='list_transaksi_makan'),
     path('create/load_kode_hotel', fetch_data_transmakan, name='kode_hotel_terpilih'),
     path('delete/<str:idtransaksimakan>', delete_transaksi_makan_view, name='delete_transmakan'),
-    path('detail/<str:idtransaksimakan>', detail_transaksi_makan_view, name='detail_transaksi_makan')
+    path('detail/<str:idtransaksi>/<str:idtransaksimakan>', detail_transaksi_makan_view, name='detail_transaksi_makan')
 ]

@@ -40,7 +40,7 @@ def fetch_data_ruangan_rs():
     faskes_data_choice = []
     with connection.cursor() as cursor:
         cursor.execute(
-        'SELECT koderuangan From RUANGAN_RS;'
+        'SELECT koderuangan From RUANGAN_RS ;'
         )
         faskes_data_choice = cursor.fetchall() #Will Get all output of the query
 

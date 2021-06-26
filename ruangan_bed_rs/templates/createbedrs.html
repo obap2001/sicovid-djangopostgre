@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create Bed Rumah Sakit </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content  %}
+
+<h1>Create Bed Rumah Sakit</h1>
+
+<form id="formCreate" action="" method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+    <div>
+    <h5>{{ form.kode_rs.label }}</h5>
+    <div class="input-group mb-3 ">   
+      {{ form.kode_rs }}
+    </div>
+
+    <br>
+    <label style="font-size: 20px; font-weight: bold" for="ruangan_rs">Kode Ruangan</label>
+    <select class="form-control mb-3"  name="kode_rs" id="kode_rs">
+        {% for eachkode in kode_rs %}
+        <option value={{eachkode.0}}>{{eachkode.0}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <br>
+    <label style="font-size: 20px; font-weight: bold" for="bed_rs">Kode Bed</label>
+      <input class="form-control" name="bed_rs" id="bed_rs" readonly>
+      </input>
+    <br>
+        </div>
+    <input class="btn btn-success" type="submit" value="Simpan">
+
+  </form>
+
+{% endblock content %}
+{% block extra_script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('#ruangan_rs').on('change', function(){
+        var tothrow = $('#ruangan_rs').val();
+        directory = '/ruangan_bed_rs/ajax_bedrs/' + tothrow; 
+        console.log()
+        $.ajax({
+            url:directory,
+            success:function(data){
+                var bed_rs_auto = parseInt(data.id);
+                $('#bed_rs').val(bed_rs_auto);
+            }
+        })
+    })
+</script>
+{% endblock extra_script %}
