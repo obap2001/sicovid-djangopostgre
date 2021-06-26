@@ -46,14 +46,14 @@
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <a class="dropdown-item" href="create_ruangan_hotel">Buat Ruangan Hotel</a>
             {% endif %}
-            <a class="dropdown-item" href="ruangan_hotel">List Ruangan Hotel</a>
+            <a class="dropdown-item" href="{% url 'list_ruangan_hotel' %}">List Ruangan Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <a class="dropdown-item" href="#">Buat Paket Makan</a>
             {% endif %}
             <a class="dropdown-item" href="#">List Paket Makan</a>
             {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="reservasi_hotel/create">Buat Reservasi Hotel</a>
-            <a class="dropdown-item" href="list_reservasi_hotel">List Reservasi Hotel</a>
+            <a class="dropdown-item" href="{% url 'create_reservasi_hotel' %}">Buat Reservasi Hotel</a>
+            <a class="dropdown-item" href="{% url 'list_reservasi_hotel' %}">List Reservasi Hotel</a>
             {% endif %}
           </div>
         </li>
@@ -121,7 +121,7 @@
             <a class="dropdown-item" href="#">Bayar Transaksi Hotel</a>
             {% endif %}
             {% if request.session.peran == 'ADMIN_SATGAS' %}
-            <a class="dropdown-item" href="{% url 'list_transaksi_rs' %}">List Transaksi RS</a>
+            <a class="dropdown-item" href="#">List Transaksi RS</a>
             <a class="dropdown-item" href="#">List Transaksi Hotel</a>
             {% endif %}
             <a class="dropdown-item" href="#">List Transaksi Booking Hotel</a>

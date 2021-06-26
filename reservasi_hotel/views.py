@@ -19,10 +19,10 @@ def create_reservasi_hotel_view(request):
             kode_ruangan = form_reservasi.cleaned_data['kode_ruangan']
 
             with connection.cursor() as cursor:
-                    cursor.execute(f'''
-                        INSERT INTO RESERVASI_HOTEL VALUES
-                        ('{nik}','{tanggal_masuk}','{tanggal_keluar}','{kode_hotel}','{kode_ruangan}')
-                    ''')
+                cursor.execute(f'''
+                    INSERT INTO RESERVASI_HOTEL VALUES
+                    ('{nik}','{tanggal_masuk}','{tanggal_keluar}','{kode_hotel}','{kode_ruangan}')
+                ''')
 
             messages.success(request, 'Data Reservasi Behasil ditambahkan')
             return redirect('list_reservasi_hotel')
@@ -47,7 +47,7 @@ def list_reservasi_hotel_view(request):
         id_now = 1
         data_organized = []
         for i in data_reservasi:
-            temp = (id_now, i[0],i[1].strftime('%d-%m-%Y'), i[2].strftime('%d-%m-%Y'),i[3],i[4],i[5] )
+            temp = (id_now, i[0],i[1].strftime('%d-%m-%Y'), i[2].strftime('%d-%m-%Y'),i[3],i[4])
             data_organized.append(temp)
             id_now += 1
         response['data_reservasi'] = data_organized
@@ -128,7 +128,7 @@ def delete_reservasi_hotel_view(request,kode_pasien,tanggal):
 
 
 def fetch_data_ruangan(request):
-    hotel = request.GET.get('hotel')
+    hotel = request.GET.get('kodehotel')
     list_ruangan = []
 
     with connection.cursor() as cursor:
