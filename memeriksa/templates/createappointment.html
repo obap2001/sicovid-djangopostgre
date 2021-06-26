@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title> Create Appointment </title>
+{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block content  %}
+
+<center>
+  <h1>Buat Appointment</h1>
+</center>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">No. STR</th>
+        <th scope="col">Email Dokter</th>
+        <th scope="col">Kode Faskes</th>
+        <th scope="col">Shift</th>
+        <th scope="col">Tanggal</th>
+        <th scope="col">Buat Appointment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in available_scheds %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ data.0 }}</td>
+        <td>{{ data.1 }}</td>
+        <td>{{ data.2 }}</td>
+        <td>{{ data.3 }}</td>
+        <td>{{ data.4}}</td>
+        <td>
+            <form action="{% url 'memeriksa:form_appointment' %}" method="GET">
+              <input type="hidden" id="username" name="username" value="{{ data.1 }}">
+              <input type="hidden" id="kode_faskes" name="kode_faskes" value="{{ data.2 }}">
+              <input type="hidden" id="shift" name="shift" value="{{ data.3 }}">
+              <input type="hidden" id="tanggal" name="tanggal" value="{{ data.4 }}">
+              <input type="submit" class="btn btn-success" value="Book">
+            </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>  
+{% endblock  %}
+ 

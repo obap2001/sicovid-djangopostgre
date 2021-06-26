@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title> list jadwal dokter </title>
+{% endblock title %}
+
+{% block content %}
+<table class="table">
+    <center>
+        <h1>List Jadwal Dokter</h1>
+    </center>
+    <thead>
+        <tr>
+            <th scope="col">No.</th>
+            <th scope="col">No. STR</th>
+            <th scope="col">Dokter</th>
+            <th scope="col">Kode Faskes</th>
+            <th scope="col">Shift</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Jumlah Pasien</th>
+            <!-- <th scope="col">Buat Jadwal Dokter</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
+        {% for data in list_jadwal_dokter %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ data.0 }}</td>
+            <td>{{ data.1 }}</td>
+            <td>{{ data.2 }}</td>
+            <td>{{ data.3 }}</td>
+            <td>{{ data.4 }}</td>
+            <td>{{ data.5 }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+        {% if request.session.peran == 'DOKTER' %}
+        {% for things in list_jadwal_dokter_sendiri %}        
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ things.0 }}</td>
+            <td>{{ things.1 }}</td>
+            <td>{{ things.2 }}</td>
+            <td>{{ things.3 }}</td>
+            <td>{{ things.4 }}</td>
+            <td>{{ things.5 }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+<button type="button" class="btn btn-primary btn-lg btn-block"><a href="{% url 'cr_jadwal_dokter:list_jadwal_dokter_sendiri' %}" style="text-decoration:none; color:#fff;">Buat Jadwal Baru</a></button>
+{% endblock %}
