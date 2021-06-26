@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rumah_sakit',
     'transaksi_rumah_sakit',
     'ruangan_hotel',
+    'reservasi_hotel',
     'cr_jadwal_dokter',
     'memeriksa'
 ]
