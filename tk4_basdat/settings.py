@@ -57,8 +57,8 @@ INSTALLED_APPS = [
     'ruangan_hotel',
     'reservasi_hotel',
     'cr_jadwal_dokter',
+    'cr_jadwal_dokter',
     'memeriksa'
-
 ]
 
 MIDDLEWARE = [

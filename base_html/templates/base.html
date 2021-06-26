@@ -104,7 +104,9 @@
             <a class="dropdown-item" href="#">List Bed RS</a>
             <a class="dropdown-item" href="{% url 'create_reservasi_rs' %}">Buat Reservasi RS</a>
             {% endif %}
-            <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a>
+            {% if request.session.peran == 'ADMIN_SATGAS' or request.session.peran == 'PENGGUNA_PUBLIK' %}
+            <a class="dropdown-item" href="{% url 'list_reservasi_rs' %}">List Reservasi RS</a> 
+            {% endif %} 
           </div>
         </li>
         {% endif %}
