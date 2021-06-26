@@ -111,6 +111,9 @@ def update_ruangan_hotel_view(request,kode_hotel,kode_ruangan):
         response['form_ruangan_hotel'] = form_ruangan_hotel
 
         if request.method == 'POST' and form_ruangan_hotel.is_valid():
+            jenis_bed = form_ruangan_hotel.cleaned_data['jenis_bed']
+            tipe = form_ruangan_hotel.cleaned_data['tipe']
+            harga_per_hari = form_ruangan_hotel.cleaned_data['harga_per_hari']
 
             with connection.cursor() as cursor:
                     cursor.execute(f'''
