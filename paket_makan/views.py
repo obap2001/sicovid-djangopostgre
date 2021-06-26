@@ -35,45 +35,57 @@ def create_paket_makan_view(request):
 def list_paket_makan_view(request):
     if 'username' in request.session and (request.session['peran'] == 'ADMIN_SISTEM' or request.session['peran'] == 'ADMIN_SATGAS' or request.session['peran'] == 'PENGGUNA_PUBLIK'):
         response = {} 
-        undeletable_data_paket_makan = []
         deletable_paket_makan = []
+        undeletable_paket_makan = []
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
                  SELECT * FROM paket_makan
-                  WHERE kodepaket IN (
-                     SELECT kodepaket from daftar_pesan)
-                 ORDER BY kodeHotel ASC;
-            ''')
-            undeletable_paket_makan = cursor.fetchall()
-            cursor.execute(f'''
-                 SELECT * FROM paket_makan
                  WHERE kodepaket NOT IN (
-                     SELECT kodepaket from daftar_pesan)
-                ORDER BY kodeHotel ASC;
+                     SELECT kodepaket from daftar_pesan
+                 );
             ''')
             deletable_paket_makan = cursor.fetchall()
+
+            cursor.execute(f'''
+                SELECT * FROM paket_makan
+                 WHERE kodepaket IN (
+                     SELECT kodepaket from daftar_pesan
+                 );
+            ''')
+            undeletable_paket_makan = cursor.fetchall()
+
         data_cleaned = []
-        for i in undeletable_paket_makan:
-            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', False)
-            data_cleaned.append(temp)
+        
         for i in deletable_paket_makan:
             temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', True)
             data_cleaned.append(temp)
+        for i in undeletable_paket_makan:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', False)
+            data_cleaned.append(temp)
+
         data_cleaned.sort()
-        response['data_paket_makan'] = data_cleaned
+        
+        data_final = []
+        angka = 1
+        for i in data_cleaned:
+            temp = (f'{i[0]}', f'{i[1]}', f'{i[2]}', f'{i[3]}', f'{i[4]}', angka)
+            data_final.append(temp)
+            angka+=1
+
+        response['data_paket_makan'] = data_final
 
         return render(request, 'list_paket_makan.html', response)
 
     else:
         return redirect('home')
 
-def delete_paket_makan_view(request, kodePaket):
+def delete_paket_makan_view(request, kodeHotel, kodePaket):
     if 'username' in request.session and request.session['peran'] == "ADMIN_SISTEM":
         with connection.cursor() as cursor:
             cursor.execute(f'''
                  DELETE from paket_makan
-                 WHERE kodePaket = '{kodePaket}' and kodePaket NOT IN
+                 WHERE kodePaket = '{kodePaket}' and kodeHotel = '{kodeHotel}' and kodePaket NOT IN
                     (SELECT kodePaket from daftar_pesan)    
                 ;
             ''')
@@ -81,10 +93,10 @@ def delete_paket_makan_view(request, kodePaket):
     else:
         return redirect('home')
 
-def update_paket_makan_view(request, kodePaket):
+def update_paket_makan_view(request, kodeHotel, kodePaket):
     if 'username' in request.session and request.session['peran'] == 'ADMIN_SISTEM':
         response = {}
-        data_paket_makan = fetch_paket_makan(request, kodePaket)
+        data_paket_makan = fetch_paket_makan(request, kodeHotel, kodePaket)
 
         if not data_paket_makan:
             messages.error(request, 'Data Paket Makan Tidak Ditemukan')
@@ -104,7 +116,7 @@ def update_paket_makan_view(request, kodePaket):
                      SET 
                      nama = '{nama}',
                      harga = {harga}
-                     WHERE kodepaket = '{kodePaket}';
+                     WHERE kodepaket = '{kodePaket}' and kodeHotel = '{kodeHotel}';
                 ''')
             
             messages.success(request, 'Data Paket Makan Berhasil Diubah')
@@ -114,12 +126,12 @@ def update_paket_makan_view(request, kodePaket):
     else:
         return redirect('home')
 
-def fetch_paket_makan(request, kodePaket):
+def fetch_paket_makan(request, kodeHotel, kodePaket):
     data_paket_makan = []
     with connection.cursor() as cursor:
         cursor.execute(f'''
              SELECT * from paket_makan
-             WHERE kodePaket = '{kodePaket}';
+             WHERE kodePaket = '{kodePaket}' and kodeHotel = '{kodeHotel}';
         ''')
         data_paket_makan = cursor.fetchone()
 

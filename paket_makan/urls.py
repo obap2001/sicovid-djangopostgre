@@ -5,7 +5,7 @@ from .views import create_paket_makan_view, delete_paket_makan_view, list_paket_
 urlpatterns = [
     path('', list_paket_makan_view, name='list_paket_makan'),
     path('create/', create_paket_makan_view, name='create_paket_makan'),
-    path('delete/<str:kodePaket>', delete_paket_makan_view, name='delete_paket_makan'),
-    path('update/<str:kodePaket>', update_paket_makan_view, name='update_paket_makan')
+    path('delete/<str:kodeHotel>/<str:kodePaket>/', delete_paket_makan_view, name='delete_paket_makan'),
+    path('update/<str:kodeHotel>/<str:kodePaket>/', update_paket_makan_view, name='update_paket_makan')
 
 ]
