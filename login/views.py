@@ -19,7 +19,7 @@ def login_view(request):
             password = form.cleaned_data['password']
             login(request,email,password)
             if request.session['username']:
-                messages.error('Data pengguna tidak ditemukan')
+                messages.error(request,'Data pengguna tidak ditemukan')
 
         if 'username' in request.session:
             return redirect('home')
