@@ -19,15 +19,15 @@
 {% block extra_script %}
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
-    $("#id_kode_ruangan").change(function () {
+    $("#id_kode_hotel").change(function () {
       var url = "{% url 'load_ruangan' %}";
-      var kode_ruangan = $(this).val();
-      console.log(koders);
+      var kodehotel = $(this).val();
+      console.log(kodehotel);
 
       $.ajax({
         url: url,
         data: {
-          'hotel': kode_ruangan
+          'kodehotel': hotel
         },
         success: function (data) {
             console.log(data);

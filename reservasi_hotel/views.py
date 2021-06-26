@@ -128,13 +128,13 @@ def delete_reservasi_hotel_view(request,kode_pasien,tanggal):
 
 
 def fetch_data_ruangan(request):
-    ruangan = request.GET.get('ruangan')
+    hotel = request.GET.get('hotel')
     list_ruangan = []
 
     with connection.cursor() as cursor:
         cursor.execute(f'''
             SELECT koderoom FROM HOTEL_ROOM
-            WHERE kodehotel='{ruangan}' AND jmlbed > 0  ;
+            WHERE kodehotel='{hotel}';
         ''')
         list_ruangan = cursor.fetchall()
 

@@ -46,16 +46,16 @@
             {% endif %}
             <a class="dropdown-item" href="#">List Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
-            <a class="dropdown-item" href="#">Buat Ruangan Hotel</a>
+            <a class="dropdown-item" href="create_ruangan_hotel">Buat Ruangan Hotel</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Ruangan Hotel</a>
+            <a class="dropdown-item" href="ruangan_hotel">List Ruangan Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <a class="dropdown-item" href="#">Buat Paket Makan</a>
             {% endif %}
             <a class="dropdown-item" href="#">List Paket Makan</a>
-            {% if request.session.peran == 'PENGGUNA_PUBLIK' %}
-            <a class="dropdown-item" href="#">Buat Reservasi Hotel</a>
-            <a class="dropdown-item" href="#">List Reservasi Hotel</a>
+            {% if request.session.peran == 'PENGGUNA_PUBLIK' or request.session.peran == 'ADMIN_SATGAS' %}
+            <a class="dropdown-item" href="reservasi_hotel/create">Buat Reservasi Hotel</a>
+            <a class="dropdown-item" href="list_reservasi_hotel">List Reservasi Hotel</a>
             {% endif %}
           </div>
         </li>
