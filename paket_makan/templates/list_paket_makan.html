@@ -33,8 +33,8 @@
             <td>{{ i.3 }}</td>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <td > 
-                <a class="btn btn-primary" href="{% url 'update_paket_makan' kodeHotel=i.0 kodePaket=i.1 %}" role="button">UPDATE</a>
-                {% if i.4 == True %}
+                <a class="btn btn-primary" href="{% url 'update_paket_makan' kodeHotel=i.0 kodePaket=i.1 %}" role="button">UPDATE {{ i.4 }}</a>
+                {% if i.4 == 'True' %}
                 <a class="btn btn-primary" href="{% url 'delete_paket_makan' kodeHotel=i.0 kodePaket=i.1 %}" role="button">DELETE</a>
                 {% endif %}
               </td>

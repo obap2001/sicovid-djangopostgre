@@ -35,7 +35,7 @@
             <td>
               {% if request.session.peran == "ADMIN_SATGAS" %}
               <a class="btn btn-primary" href="#" role="button">UPDATE</a>
-              {% if i.3 == True %}
+              {% if i.3 == 'True' %}
               <a class="btn btn-primary" href="{% url 'delete_transmakan' idtransaksimakan=i.1 %}" role="button">DELETE</a>
               {% endif %}
               {% endif %}
