@@ -44,9 +44,9 @@
             {% endif %}
             <a class="dropdown-item" href="#">List Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
-            <a class="dropdown-item" href="#">Buat Ruangan Hotel</a>
+            <a class="dropdown-item" href="{% url 'create_ruangan_hotel' %}">Buat Ruangan Hotel</a>
             {% endif %}
-            <a class="dropdown-item" href="#">List Ruangan Hotel</a>
+            <a class="dropdown-item" href="{% url 'list_ruangan_hotel' %}">List Ruangan Hotel</a>
             {% if request.session.peran == 'ADMIN_SISTEM' %}
             <a class="dropdown-item" href="{% url 'create_paket_makan' %}">Buat Paket Makan</a>
             {% endif %}

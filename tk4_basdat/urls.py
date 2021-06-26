@@ -38,5 +38,7 @@ urlpatterns = [
     path('transaksi_hotel/',include('transaksi_hotel.urls')),
     path('transaksi_booking/',include('transaksi_booking.urls')),
     path('reservasi_hotel/',include('reservasi_hotel.urls')),
-    path('memeriksa/', include('memeriksa.urls'))
+    path('cr_jadwal_dokter/', include('cr_jadwal_dokter.urls')),
+    path('memeriksa/', include('memeriksa.urls')),
+    path('ruangan_bed_rs/', include('ruangan_bed_rs.urls'))
 ]
